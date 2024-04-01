@@ -1,0 +1,370 @@
+Rect.js
+
+e.g.
+
+let p,q;
+let p1,p2;
+
+function setup() {
+  createCanvas(400, 400);
+  q = createGraphics(400,400);
+  p = new Rect([100,100,20,20]);
+  p1 = p2 = 100;
+}
+
+function draw() {
+  background(220);
+  q.clear()
+  if(p.collidePoint(mouseX-p1,mouseY-p2)){
+    print("Helli")
+  }
+  p.set_anchor(null,150);
+  p.set_rounds(20,10,4);
+  p.del_angle(0.5);
+  p.set_pos(100,100);
+  renderer(q,p,p1,p2);
+}
+
+
+--------------------------------------------------
+
+assert.js
+
+e.g.
+
+assert(100,list,anything)
+
+
+--------------------------------------
+
+event.js
+
+note: Event class is for internal use only, just Clock class is to be used
+1) get_eventhandler returns the set_interval or set_timeout handler
+2) clear_clock_event , clears the event name , its handler and its args
+
+e.g.
+
+let ev;
+
+function setup() {
+  createCanvas(400, 400);
+  ev = new Event();
+  ev.set_event("name",(args)=>{assert(args)},["gehh","gdge"])
+  ev.call_event("name")
+}
+
+function draw() {
+  background(220);
+}
+
+
+e.g 
+
+let c;
+let n;
+
+function setup() {
+  createCanvas(400, 400);
+  c = new Clock();
+  n = {p:0};
+  c.set_interval("name",(args)=>{
+    assert(args);
+    args[1].p++;
+  },1000,["dello",n]);
+}
+
+function draw() {
+  background(220);
+  if(n.p == 3){
+    assert("kfklf")
+    c.stop_event("name");
+  }
+  if(is_mouse_clicked){
+    assert("hrkki")
+    n.p = 0;
+    c.reset_interval_event("name",1000);
+    
+  }
+}
+
+
+
+e.g.
+
+let c;
+let n;
+
+function setup() {
+  createCanvas(400, 400);
+  c = new Clock();
+  n = {p:0};
+  c.set_timeout("name",(args)=>{
+    assert(args);
+    args[1].p++;
+  },1000,["dello",n]);
+}
+
+function draw() {
+  background(220);
+  if(is_mouse_clicked){
+    assert("hrkki")
+    n.p = 0;
+    c.reset_timeout_event("name",1000);
+  }
+}
+
+
+
+----------------------------
+controls.js
+
+e.g.
+
+
+
+function setup() {
+  createCanvas(400, 400);
+  
+}
+
+function draw() {
+  background(220);
+  if(is_mouse_clicked){
+    assert("clicked")
+  }
+
+  if(is_mouse_pressed){
+    assert("pressed",mouseKey)
+  }
+
+}
+
+
+e.g.
+
+
+
+function setup() {
+  createCanvas(400, 400);
+  
+}
+
+function draw() {
+  background(220);
+  if(is_key_released){
+    assert("clicked",current_key_pressed,keyp)
+  }
+  if(is_mouse_clicked){
+    assert(keyp)
+  }
+
+}
+
+
+---------------------------------------------
+Ui.js
+note: you have to call compute_box on parent everytime any changes is made on any children
+
+e.g.
+
+let a = {};
+
+function setup() {
+  createCanvas(400, 400);
+
+  a.a = new ContainerUi("hortz",null,null,[300,300]);
+  a.a1 = new ContainerUi("hortz",a.a,"a1");
+  // a.a1.set_weight(0);
+  a.a1.set_size_const(true,true);
+  a.a1.set_size(80,30);
+  a.a1.state.fill_color = color(255,0,0);
+  a.a2 = new ContainerUi("vert",a.a,"a2");
+  a.a2.state.fill_color = color(255,255,0);
+  a.a3 = new ContainerUi("hortz",a.a,"a3");
+  a.a3.state.fill_color = color(255,0,255);
+
+  a.a21 = new ContainerUi("hortz",a.a2,"a21");
+  a.a21.set_size_weight(20,10);
+  a.a21.set_size_const(true,false);
+  // a.a21.set_size(90,80);
+  a.a22 = new ContainerUi("hortz",a.a2,"a22");
+  a.a23 = new ContainerUi("hortz",a.a2,"a23");
+
+  a.a.compute_box();
+
+  assert(a)
+
+}
+
+function draw() {
+  background(220);
+  a.a.draw();
+
+  if(is_mouse_pressed){
+    a.a.set_window_pos(mouseX,mouseY);
+    a.a.set_size(200,200);
+    // // a.a1.set_weight(0);
+    // a.a1.set_size_const(false,false);
+    // // a.a1.set_size(10,100);
+    // a.a1.set_weight(4);
+    // a.a21.set_size(10,150);
+    a.a.compute_box();
+    // assert(a)
+  }
+}
+
+
+global_ui_event.js
+
+note: there are three events in every ui, hover, focused and focus_pressed
+
+e.g.
+
+let a = {};
+
+function setup() {
+  createCanvas(400, 400);
+
+  a.a = new ContainerUi("hortz",null,null,[300,300]);
+  a.a.set_focus_event(()=>console.log("a"));
+  a.a1 = new ContainerUi("hortz",a.a,"a1");
+  // a.a1.set_weight(0);
+  a.a1.set_size_const(true,true);
+  a.a1.set_size(80,30);
+  a.a1.set_focus_event(()=>{
+    console.log("a1");
+    return true;
+  });
+  a.a1.state.fill_color = color(255,0,0);
+  a.a2 = new ContainerUi("vert",a.a,"a2");
+  a.a2.state.fill_color = color(255,255,0);
+  a.a3 = new ContainerUi("hortz",a.a,"a3");
+  a.a3.state.fill_color = color(255,0,255);
+
+  a.a21 = new ContainerUi("hortz",a.a2,"a21");
+  a.a21.set_size_weight(20,10);
+  a.a21.set_size_const(true,false);
+  // a.a21.set_size(90,80);
+  a.a22 = new ContainerUi("hortz",a.a2,"a22");
+  a.a23 = new ContainerUi("hortz",a.a2,"a23");
+
+  a.a.compute_box();
+
+  // assert(a)
+
+}
+
+function draw() {
+  background(220);
+  a.a.draw();
+
+}
+
+
+e.g.
+
+
+let a = {};
+
+
+
+function setup(){
+  createCanvas(400,400);
+
+  a.a = new ContainerUi("hortz",null,"parent",[200,200])
+  a.a.set_window_pos(100,100);
+  a.a.state.fill_color = color(125);
+
+  a.a1 = new GridUi(a.a,"grid",4);
+  a.a1.set_row_constant(0,false);
+  a.a1.make_row_spacer(1);
+
+  a.a11 = new BoxUi(a.a1.get_row(0),"Box");
+  a.a12 = new SpacerUi(a.a1.get_row(0),"spacer");
+  a.a13 = new BoxUi(a.a1.get_row(0),"Box");
+  a.a14 = new BoxUi(a.a1.get_row(0),"Box");
+  a.a15 = new BoxUi(a.a1.get_row(2),"Box");
+  a.a16 = new BoxUi(a.a1.get_row(2),"Box");
+
+  a.a.compute_box();
+
+  assert(a);
+}
+
+function draw(){
+  background(0);
+  a.a.draw();
+
+  if(is_mouse_clicked){
+    // a.a1.remove_row(1);
+    // a.a.compute_box();
+  }
+
+}
+
+
+
+e.g.
+
+let a = {};
+
+
+
+function setup(){
+  createCanvas(400,400);
+
+  a.a = new ContainerUi("hortz",null,"parent",[width,height]);
+  // a.a.state.fill_color = color(255);
+  // a.a.set_window_pos(100,100);
+  a.a.state.fill_color = color(225);
+
+  a.a1 = new GridUi(a.a,"grid",4);
+  a.a1.set_row_constant(0,false);
+  a.a1.set_row_constant(1,false);
+  a.a1.set_row_constant(3,false);
+  a.a1.make_row_expanded(2);
+
+  a.Home = new BoxUi(a.a1.get_row(0),"Home");
+  a.Home.set_text("Home");
+  a.Home.body.set_focus_clicked_event(()=>{
+    console.log("Gekki")
+  });
+  a.Setup = new BoxUi(a.a1.get_row(0),"Setup");
+  a.Setup.set_text("Setup");
+  a.Analysis = new BoxUi(a.a1.get_row(0),"Analysis",60);
+  a.Analysis.set_text("Analysis");
+  a.s1 = new ExpandedUi(a.a1.get_row(0),"s1");
+
+  a.File = new BoxUi(a.a1.get_row(1),"File");
+  a.File.set_text("File");
+  a.New = new BoxUi(a.a1.get_row(1),"New");
+  a.New.set_text("New");
+  a.s2 = new ExpandedUi(a.a1.get_row(1),"s2");
+
+  a.TextArea = new ExpandedUi(a.a1.get_row(2),"TextArea");
+  a.TextArea.element.state.fill_color = color(225);
+
+
+  a.Footer = new BoxUi(a.a1.get_row(3),"Footer",60);
+  a.Footer.set_text("Footer");
+  a.slider = new SliderUi(a.a1.get_row(3),"Slider","hortz",100,20);
+  a.s3 = new ExpandedUi(a.a1.get_row(3),"s3");
+  a.a.compute_box();
+  a.slider.slider.set_size(a.slider.slider.w,a.slider.parent.h);
+  a.a.compute_box();
+
+  assert(a);
+}
+
+function draw(){
+  background(0);
+  a.a.draw();
+
+  if(is_mouse_clicked){
+    // a.a1.remove_row(1);
+    // a.a.compute_box();
+  }
+
+}
+
