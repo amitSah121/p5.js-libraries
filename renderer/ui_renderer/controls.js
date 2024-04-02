@@ -1,7 +1,7 @@
 /*
 ------------------------------------------------
 
-1) key pressed, released states are defines
+1) key pressed, released states are defined
 2) current key pressed and released characters are defined
 
 ------------------------------------
@@ -116,7 +116,7 @@ mouse functions
 
 --------------------------------------
 */
-let is_mouse_pressed = false, is_mouse_released = false, is_mouse_double_clicked = false, is_mouse_clicked = false, is_mouse_double_dragged = false;
+let is_mouse_pressed = false, is_mouse_released = false, is_mouse_double_clicked = false, is_mouse_clicked = false, is_mouse_dragged = false;
 let mouse_release_count = 0;
 let mouse_dx = 0,mouse_dy = 0;
 let mouseKey = "", totalTrackPadFinger = 0;
@@ -127,7 +127,7 @@ let check_mouse_status = function(){
   is_mouse_released = false;
   is_mouse_clicked = false;
   is_mouse_double_clicked = false;
-  is_mouse_double_dragged = false;
+  is_mouse_dragged = false;
   mouse_dx = 0;
   mouse_dy = 0;
 }
@@ -170,7 +170,7 @@ function doubleClicked(e){
 }
 
 function mouseDragged(e){
-  is_mouse_double_dragged = true;
+  is_mouse_dragged = true;
   mouseKey = mouse_button_types[e.which-1];
   totalTrackPadFinger = e.buttons;
 }

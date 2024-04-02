@@ -172,7 +172,7 @@ set_pos() // aborts
   }
   
   rect_polygon(){
-    return [...this.bounds];
+    return [...this.list];
   }
   
   rect_renderer(graphics){

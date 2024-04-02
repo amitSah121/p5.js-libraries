@@ -50,6 +50,7 @@ function setup(){
   a.slider.slider.set_size(a.slider.slider.w,a.slider.parent.h);
   a.a.compute_box();
 
+
   assert(a);
 }
 
@@ -57,7 +58,8 @@ function draw(){
   background(0);
   a.a.draw();
 
-  if(is_mouse_clicked){
+  if(is_mouse_dragged){
+    console.log("helli")
     // a.a1.remove_row(1);
     // a.a.compute_box();
   }
