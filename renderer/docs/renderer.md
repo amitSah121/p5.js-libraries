@@ -9,6 +9,20 @@ This file is specifically made to declare foundation of all the other js files I
 
 ### Shape class
 
+#### Variables
+1) name
+2) bounding_box
+  - called every time by the renderer to check if it is inside the main window
+  - name+"_box" function to be defined
+3) collision_polygon
+  - called to get the current transformed points
+  - name+"_polygon" function to be defined
+4) list
+  - variable that contains the updated list, can be directly returned in collision_polygon
+5) renderer
+  - function that defines how the shape is rendered with or without p5.graphics
+  - name+"_renderer" function to be defined
+
 #### parameters
 1) name -> name of the shape, e.g. rect
 2) lst  -> list of points you need to give the shape

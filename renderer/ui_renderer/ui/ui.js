@@ -59,6 +59,17 @@ class BoxUi{
       this.margin_right.state.stroke_color = color(0,0);
   
     }
+
+    change_parent(p,i){
+      if(p != null && this.parent != null){
+        this.bg.remove();
+        p.add_child(this.bg,i);
+      }
+    }
+
+    remove(){
+      return this.bg.remove();
+    }
   
     update_size(){
       this.margin_left.set_size(this.margin.l,this.size.h+this.margin.t+this.margin.b);
@@ -86,6 +97,16 @@ class BoxUi{
         this.body.set_text(t);
         // this.body.show_text(true);
     }
+
+    set_bg_color(f){
+      this.bg_color = f != null ? f : this.bg_color;
+      this.bg.state.fill_color = this.bg_color;
+    }
+
+    set_fg_color(f){
+      this.fg_color = f != null ? f : this.fg_color;
+      this.body.state.fill_color = this.fg_color;
+    }
   }
 
 
@@ -112,10 +133,28 @@ class GridUi{
         this.list.push(p1);
       }
     }
+
+    change_parent(p,i){
+      if(p != null && this.parent != null){
+        this.element.remove();
+        p.add_child(this.element,i);
+      }
+    }
+
+    remove(){
+      return this.element.remove();
+    }
   
     get_row(i){
       if( i >= this.row) return;
       return this.list[i];
+    }
+
+    add_child(i,child,j){
+      let p1 = this.get_row(i);
+      if(p1 != null){
+        p1.add_child(child,j);
+      }
     }
   
     set_row_constant(i,w_const,h_const){
@@ -160,6 +199,18 @@ class GridUi{
       this.element = new ContainerUi(this.dir,this.parent,this.name);
       this.element.state.fill_color = color(255);
     }
+
+    change_parent(p,i){
+      if(p != null && this.parent != null){
+        this.element.remove();
+        p.add_child(this.element,i);
+      }
+    }
+
+    remove(){
+      return this.element.remove();
+    }
+  
   }
   
 
@@ -201,6 +252,31 @@ class GridUi{
         this.slider_per.set_size_per(this.amt,this.amt);
         this.window.compute_box();
       })
+    }
+
+    change_parent(p,i){
+      if(p != null && this.parent != null){
+        this.slider.remove();
+        p.add_child(this.slider,i);
+      }
+    }
+
+    remove(){
+      return this.slider.remove();
+    }
+
+    set_dir(dir){
+      this.dir = dir != null ? (dir == "hortz" ? "vert" : "hortz") : "vert";
+      this.slider.set_direction(this.dir);
+    }
+  
+
+    set_size(w,h){
+      this.size_w = w != null ? w : this.size_w;
+      this.size_h = h != null ? h : this.size_h;
+      this.slider.set_size(this.size_w,this.size_h);
+      this.amt = this.dir == "vert" ? (p1>0 ? p1 : 0)/this.slider.w : (p2>0 ? p2 : 0)/this.slider.h;  
+      this.slider_per.set_size_per(this.amt,this.amt);
     }
   }
   

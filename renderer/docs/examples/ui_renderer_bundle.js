@@ -971,218 +971,218 @@ class Clock extends Event{
 
 // shape/rect.js
 
-
 class Rect extends Shape{
   
-    constructor(lst){
-      let [x,y,w,h] = lst;
-      let original_list = lst;
-      lst = [x,y,x+w,y,x+w,y+h,x,y+h];
-      super("rect",lst);
-      this.original_list = original_list;
-      this.rounds = [0,0,0,0];
-      this.anchor = [lst[0],lst[1]];
-      this.angle = 0;
-      this.fill_color = color(255);
-      this.stroke_color = color(0);
-      this.show_text = false;
-      this.text = "";
-      this.text_wrap = CHAR;
-      this.text_size = 14;
-      this.text_color = color(0);
-      this.text_align = [CENTER,CENTER];
-      this.text_style = NORMAL;
-      this.text_leading = 17.5*(this.text_size/3); // default text leading
-      this.image = null;
-      this.show_image = false;
-      this.update();
-    }
-  
-  /*
-  like 
-  set_pos(100,null) // sets only x
-  set_pos(null,100) // sets only y
-  set_pos(100,100) // sets both x and y
-  set_pos(null,null) // aborts
-  set_pos() // aborts
-  */
-    set_pos(x,y){
-      this.original_list[0] = x != null ? x : this.original_list[0];
-      this.original_list[1] = y != null ? y : this.original_list[1];
-      this.update();
-    }
-  
-    set_size(w,h){
-      this.original_list[2] = w != null ? w : this.original_list[2];
-      this.original_list[3] = h != null ? h : this.original_list[3];
-      // assert(this.original_list[2],w) 
-      this.update();
-    }
-  
-    set_anchor(a1,a2){
-      this.anchor[0] = a1 != null ? a1 : this.anchor[0];
-      this.anchor[1] = a2 != null ? a2 : this.anchor[1];
-      this.update();
-    }
-  
-    set_angle(a){
-      this.angle = a != null ? a : this.angle;
-      this.update();
-    }
-  
-    set_rounds(b1,b2,b3,b4){
-      this.rounds[0] = b1 != null && b1 >= 0? b1 : this.rounds[0];
-      this.rounds[1] = b2 != null && b2 >= 0? b2 : this.rounds[1];
-      this.rounds[2] = b3 != null && b3 >= 0? b3 : this.rounds[2];
-      this.rounds[3] = b4 != null && b4 >= 0? b4 : this.rounds[3];
-    }
-  
-    set_fill_color(f){
-      this.fill_color = f != null ? f : this.fill_color;
-    }
-  
-    set_stroke_color(f){
-      this.stroke_color = f != null ? f : this.stroke_color;
-    }
-  
-    set_image(img){
-      this.image = img != null ? img : this.image;
-    }
-  
-    set_show_image(s){
-      this.show_image = s != null ? s : this.show_image;
-    }
-  
-    set_text(s){
-      this.text = s != null ? s : this.text;
-      if(this.text_wrap == WORD){
-        if(textWidth(this.text) > this.original_list[2]){
-          this.show_text = false;
-        }else{
-          this.show_text = true;
-        }
-      }
-    }
-  
-    set_text_color(c){
-      this.text_color = c != null ? c : this.text_color;
-    }
-  
-    set_show_text(f){
-      this.show_text = f != null ? f : this.show_text;
-    }
-  
-    set_text_params(align,size,style,leading){
-      this.text_align[0] = align[0] != null ? align[0] : this.text_align[0];
-      this.text_align[1] = align[1] != null ? align[1] : this.text_align[1];
-      this.text_size = size != null ? size : this.size;
-      this.text_style = style != null ? style : this.style;
-      this.text_leading = leading != null ? leading : this.text_leading;
-    }
-  
-    del_pos(x,y){
-      this.original_list[0] += x != null ? x : 0;
-      this.original_list[1] += y != null ? y : 0;
-      this.update();
-    }
-  
-    del_size(dw,dh){
-      this.original_list[2] += dw != null ? dw : 0;
-      this.original_list[3] += dh != null ? dh : 0;
-      this.update();
-    }
-  
-    del_anchor(dela1,dela2){
-      this.anchor[0] += dela1 != null ? dela1 : 0;
-      this.anchor[1] += dela2 != null ? del2 : 0;
-      this.update();
-    }
-  
-    del_angle(dela){
-      this.angle += dela != null ? dela : 0;
-      this.update();
-    }
-  
-    collidePoint(x,y){
-      const poly = [];
-      for(let i=0 ; i<this.list.length/2 ; i++){
-        poly.push(createVector(this.list[2*i],this.list[2*i+1]));
-      }
-      return collidePointPoly(x,y,poly);
-    }
-  
-    update(){
-      let [x,y,w,h] = this.original_list;
-      this.list = [x,y,x+w,y,x+w,y+h,x,y+h];
-      this.rect_box();
-    }
-  
-    update_list(){
-      let [x1,y1,x2,y2,x3,y3,x4,y4] = this.list;
-      let [px,py] = this.anchor;
-      let p1 = [[x1-px,y1-py],[x2-px,y2-py],[x3-px,y3-py],[x4-px,y4-py]];
-      let ang = radians(this.angle);
-      let pv = [];
-      for(let i=0 ; i<p1.length ; i++){
-        pv.push([px+(p1[i][0]*cos(ang)-p1[i][1]*sin(ang)),py+(p1[i][0]*sin(ang)+p1[i][1]*cos(ang))]);
-      }
-      pv = pv.flat(2);
-      this.list = pv;
-    }
-    
-    rect_box(){
-      this.update_list();
-      // assert(this.list)
-      let pv = this.list;
-      let [x_min,x_max,y_min,y_max] = [9999999999,-9999999999,9999999999,-9999999999];
-      for(let i=0 ; i<pv.length/2 ; i++){
-        x_max = max(x_max,pv[2*i])
-        y_max = max(y_max,pv[2*i+1])
-        x_min = min(x_min,pv[2*i])
-        y_min = min(y_min,pv[2*i+1])
-      }
-      this.bounds = [x_min,y_min,x_max-x_min,y_max-y_min];
-    }
-    
-    rect_polygon(){
-      return [...this.list];
-    }
-    
-    rect_renderer(graphics){
-      let [x,y,w,h] = this.original_list;
-      let [x1,y1] = this.anchor;
-      graphics.push();
-      graphics.translate(x1,y1);
-      graphics.rotate(radians(this.angle));
-      graphics.translate(-x1,-y1);
-      if(!this.show_image){
-        graphics.fill(this.fill_color);
-        graphics.stroke(this.stroke_color);
-        graphics.rect(x,y,w,h,...this.rounds);
-      }else{
-        graphics.image(x,y,w,h);
-      }
-      if(this.show_text) {
-        graphics.fill(this.text_color);
-        graphics.textSize(this.text_size);
-        graphics.textAlign(...this.text_align);
-        graphics.textWrap(this.text_wrap);
-        graphics.textStyle(this.text_style);
-        graphics.text(this.text,x,y,w,h);
-      }
-      // graphics.ellipse(x1,y1,10,10);
-      graphics.pop()
-    }
-    
-    
+  constructor(lst){
+    let [x,y,w,h] = lst;
+    let original_list = lst;
+    lst = [x,y,x+w,y,x+w,y+h,x,y+h];
+    super("rect",lst);
+    this.original_list = original_list;
+    this.rounds = [0,0,0,0];
+    this.anchor = [lst[0],lst[1]];
+    this.angle = 0;
+    this.fill_color = color(255);
+    this.stroke_color = color(0);
+    this.show_text = false;
+    this.text = "";
+    this.text_wrap = CHAR;
+    this.text_size = 14;
+    this.text_color = color(0);
+    this.text_align = [CENTER,CENTER];
+    this.text_style = NORMAL;
+    this.text_leading = 17.5*(this.text_size/3); // default text leading
+    this.image = null;
+    this.show_image = false;
+    this.update();
   }
 
+/*
+like 
+set_pos(100,null) // sets only x
+set_pos(null,100) // sets only y
+set_pos(100,100) // sets both x and y
+set_pos(null,null) // aborts
+set_pos() // aborts
+*/
+  set_pos(x,y){
+    this.original_list[0] = x != null ? x : this.original_list[0];
+    this.original_list[1] = y != null ? y : this.original_list[1];
+    this.update();
+  }
 
+  set_size(w,h){
+    this.original_list[2] = w != null ? w : this.original_list[2];
+    this.original_list[3] = h != null ? h : this.original_list[3];
+    // assert(this.original_list[2],w) 
+    this.update();
+  }
+
+  set_anchor(a1,a2){
+    this.anchor[0] = a1 != null ? a1 : this.anchor[0];
+    this.anchor[1] = a2 != null ? a2 : this.anchor[1];
+    this.update();
+  }
+
+  set_angle(a){
+    this.angle = a != null ? a : this.angle;
+    this.update();
+  }
+
+  set_rounds(b1,b2,b3,b4){
+    this.rounds[0] = b1 != null && b1 >= 0? b1 : this.rounds[0];
+    this.rounds[1] = b2 != null && b2 >= 0? b2 : this.rounds[1];
+    this.rounds[2] = b3 != null && b3 >= 0? b3 : this.rounds[2];
+    this.rounds[3] = b4 != null && b4 >= 0? b4 : this.rounds[3];
+  }
+
+  set_fill_color(f){
+    this.fill_color = f != null ? f : this.fill_color;
+  }
+
+  set_stroke_color(f){
+    this.stroke_color = f != null ? f : this.stroke_color;
+  }
+
+  set_image(img){
+    this.image = img != null ? img : this.image;
+  }
+
+  set_show_image(s){
+    this.show_image = s != null ? s : this.show_image;
+  }
+
+  set_text(s){
+    this.text = s != null ? s : this.text;
+    // if(this.text_wrap == WORD){
+    //   if(textWidth(this.text) > this.original_list[2]){
+    //     this.show_text = false;
+    //   }else{
+    //     this.show_text = true;
+    //   }
+    // }
+  }
+
+  set_text_color(c){
+    this.text_color = c != null ? c : this.text_color;
+  }
+
+  set_show_text(f){
+    this.show_text = f != null ? f : this.show_text;
+  }
+
+  set_text_params(align,size,style,leading){
+    this.text_align[0] = align[0] != null ? align[0] : this.text_align[0];
+    this.text_align[1] = align[1] != null ? align[1] : this.text_align[1];
+    this.text_size = size != null ? size : this.size;
+    this.text_style = style != null ? style : this.style;
+    this.text_leading = leading != null ? leading : this.text_leading;
+  }
+
+  del_pos(x,y){
+    this.original_list[0] += x != null ? x : 0;
+    this.original_list[1] += y != null ? y : 0;
+    this.update();
+  }
+
+  del_size(dw,dh){
+    this.original_list[2] += dw != null ? dw : 0;
+    this.original_list[3] += dh != null ? dh : 0;
+    this.update();
+  }
+
+  del_anchor(dela1,dela2){
+    this.anchor[0] += dela1 != null ? dela1 : 0;
+    this.anchor[1] += dela2 != null ? del2 : 0;
+    this.update();
+  }
+
+  del_angle(dela){
+    this.angle += dela != null ? dela : 0;
+    this.update();
+  }
+
+  collidePoint(x,y){
+    const poly = [];
+    for(let i=0 ; i<this.list.length/2 ; i++){
+      poly.push(createVector(this.list[2*i],this.list[2*i+1]));
+    }
+    return collidePointPoly(x,y,poly);
+  }
+
+  update(){
+    let [x,y,w,h] = this.original_list;
+    this.list = [x,y,x+w,y,x+w,y+h,x,y+h];
+    this.rect_box();
+  }
+
+  update_list(){
+    let [x1,y1,x2,y2,x3,y3,x4,y4] = this.list;
+    let [px,py] = this.anchor;
+    let p1 = [[x1-px,y1-py],[x2-px,y2-py],[x3-px,y3-py],[x4-px,y4-py]];
+    let ang = radians(this.angle);
+    let pv = [];
+    for(let i=0 ; i<p1.length ; i++){
+      pv.push([px+(p1[i][0]*cos(ang)-p1[i][1]*sin(ang)),py+(p1[i][0]*sin(ang)+p1[i][1]*cos(ang))]);
+    }
+    pv = pv.flat(2);
+    this.list = pv;
+  }
+  
+  rect_box(){
+    this.update_list();
+    // assert(this.list)
+    let pv = this.list;
+    let [x_min,x_max,y_min,y_max] = [9999999999,-9999999999,9999999999,-9999999999];
+    for(let i=0 ; i<pv.length/2 ; i++){
+      x_max = max(x_max,pv[2*i])
+      y_max = max(y_max,pv[2*i+1])
+      x_min = min(x_min,pv[2*i])
+      y_min = min(y_min,pv[2*i+1])
+    }
+    this.bounds = [x_min,y_min,x_max-x_min,y_max-y_min];
+  }
+  
+  rect_polygon(){
+    return [...this.list];
+  }
+  
+  rect_renderer(graphics){
+    let [x,y,w,h] = this.original_list;
+    let [x1,y1] = this.anchor;
+    graphics.push();
+    graphics.translate(x1,y1);
+    graphics.rotate(radians(this.angle));
+    graphics.translate(-x1,-y1);
+    if(!this.show_image){
+      graphics.fill(this.fill_color);
+      graphics.stroke(this.stroke_color);
+      graphics.rect(x,y,w,h,...this.rounds);
+    }else{
+      graphics.image(this.image,x,y,w,h);
+    }
+    if(this.show_text) {
+      graphics.fill(this.text_color);
+      graphics.textSize(this.text_size);
+      graphics.textAlign(...this.text_align);
+      graphics.textWrap(this.text_wrap);
+      graphics.textStyle(this.text_style);
+      graphics.text(this.text,x,y,w,h);
+    }
+    // graphics.ellipse(x1,y1,10,10);
+    graphics.pop()
+  }
+  
+  
+}
   // ---------------------------
 
   // ui/container_ui.js
 
   // const { assert } = require("console");
+
+// const { assert } = require("console");
+// const { assert } = require("console");
 
 // const { assert } = require("console");
 
@@ -1213,6 +1213,9 @@ class ContainerUi{
         this.text_align = [CENTER,CENTER];
         this.text_style = NORMAL;
         this.text_leading = 17.5*(this.text_size/3); // default text leading
+        this.image = null;
+        this.show_image = false;
+        this.disable_events = false;
         
         this.hover_event = null;
         this.focus_event = null;
@@ -1241,6 +1244,7 @@ class ContainerUi{
             this.py = this.y;
 
             this.pg = createGraphics(this.state.w,this.state.h);
+            this.disable_window_events = false;
         }else{
             this.parent.add_child(this);
             this.state.x = this.x =  0;
@@ -1266,6 +1270,15 @@ class ContainerUi{
             this.state.stroke_color = color(0,0);
         }
     
+    }
+
+    set_disable_event(b){
+        this.disable_events = b != null ? b : this.disable_events;
+    }
+
+    set_disable_window_event(b){
+        if(this.parent != null) return;
+        this.disable_window_events = b != null ? b : this.disable_window_events;
     }
 
     set_hover_event(f){
@@ -1351,6 +1364,27 @@ class ContainerUi{
         // }
     }
 
+    set_direction(dir){
+        this.state.dir = dir != null ? dir : this.state.dir;
+    }
+
+
+    set_image(img){
+        this.image = img != null ? img : this.image;
+    }
+
+    set_show_image(s){
+        this.show_image = s != null ? s : this.show_image;
+    }
+
+    set_fill_color(c){
+        this.state.fill_color = c != null ? c : this.state.fill_color;
+    }
+
+    set_stroke_color(c){
+        this.state.stroke_color = c != null ? c : this.state.stroke_color;
+    }
+
     set_text_color(c){
         this.text_color = c != null ? c : this.text_color;
     }
@@ -1369,12 +1403,18 @@ class ContainerUi{
         this.text_leading = leading != null ? leading : this.text_leading;
     }
 
-    add_child(p){
-        this.child.push(p);
+    add_child(p,i){
+        if(p == null) return;
+        if(i == null){
+            this.child.push(p);
+        }else{
+            this.child.splice(i, 0, p);
+        }
+        p.parent = this;
     }
 
     change_parent(p){
-        if(p != null){
+        if(p != null && this.parent != null){
             let that = this;
             this.parent.child = this.parent.child.filter(x => x != that);
             this.parent = p;
@@ -1385,8 +1425,9 @@ class ContainerUi{
     remove(){
         let that = this;
         this.parent.child = this.parent.child.filter(x => x != that);
+        let p = this.parent;
         this.parent = 1; // to avoid clashing with other real parent elements
-
+        return p;
     }
 
     collidePoint(x,y){
@@ -1705,6 +1746,8 @@ class ContainerUi{
         ui_rect.set_show_text(this.show_text);
         ui_rect.set_text_color(this.text_color);
         ui_rect.set_text_params(this.text_align,this.text_size,this.text_style,this.text_leading);
+        ui_rect.set_image(this.image);
+        ui_rect.set_show_image(this.show_image);
         renderer(pg,ui_rect,x,y,w,h);
         let i = 0;
         let temp = this.child[i];
@@ -1716,11 +1759,9 @@ class ContainerUi{
     }
 }
 
-
 // ------------------------
 
 // ui/global_ui_event.js
-
 let focused = [], focused_pressed = [], focus_clicked = [], hovered = [], previous_hover = [], mouse_pressed_during_focus_pressed = false;
 
 
@@ -1728,6 +1769,11 @@ const compute_hover = function(p,j,px,py){
     let i=0;
     let temp = p[i];
     while(temp != null){
+        if(temp.disable_window_events == true){
+            i++;
+            temp = p[i];
+            continue;
+        }
         if(temp.collidePoint(mouseX-(px != null ? px : temp.px),mouseY-(py != null ? py :temp.py))){
             // assert(mouseX,mouseY,i,j);
             hovered[j != null ? j : i].push(temp);
@@ -1744,6 +1790,11 @@ const compute_focus = function(p,px,py){
     let i=0;
     let temp = p[i];
     while(temp != null){
+        if(temp.disable_window_events == true){
+            i++;
+            temp = p[i];
+            continue;
+        }
         if(!is_mouse_pressed){
             mouse_pressed_during_focus_pressed = false;
         }
@@ -1778,6 +1829,10 @@ const compute_hover_event = function(){
     while(temp != null){
         let temp1 = temp.pop();
         while(temp1 != null){
+            if(temp1.disable_events == true){
+                temp1 = temp.pop();
+                continue;
+            }
             if(!b){
                 if(typeof(temp1.hover_event) == "function"){
                     b = temp1.hover_event();
@@ -1798,6 +1853,11 @@ const compute_focus_event = function(){
     let temp = focused[i];
     let b = false;
     while(temp != null){
+        if(temp.disable_events == true){
+            i--;
+            temp = hovered[i];
+            continue;
+        }
         if(!b){
             if(typeof(temp.focus_event) == "function"){
                 b = temp.focus_event();
@@ -1817,6 +1877,10 @@ const compute_hover_out_event = function(p){
     let temp = p.pop();
     let b = false;
     while(temp != null){
+        if(temp.disable_events == true){
+            temp = p.pop();
+            continue;
+        }
         if(!b){
             if(typeof(temp.hover_out_event) == "function"){
                 b = temp.hover_out_event();
@@ -1833,6 +1897,10 @@ const compute_focus_pressed_event = function(){
     let temp = focused_pressed.pop();
     let b = false;
     while(temp != null){
+        if(temp.disable_events == true){
+            temp = focused_pressed.pop();
+            continue;
+        }
         if(!b){
             if(typeof(temp.focus_pressed_event) == "function"){
                 b = temp.focus_pressed_event();
@@ -1849,6 +1917,10 @@ const compute_focus_out_event = function(){
     let temp = focused.pop();
     let b = false;
     while(temp != null){
+        if(temp.disable_events == true){
+            temp = focused.pop();
+            continue;
+        }
         if(!b){
             if(typeof(temp.focus_out_event) == "function"){
                 b = temp.focus_out_event();
@@ -1865,6 +1937,10 @@ const compute_focus_clicked_event = function(){
     let temp = focus_clicked.pop();
     let b = false;
     while(temp != null){
+        if(temp.disable_events == true){
+            temp = focus_clicked.pop();
+            continue;
+        }
         if(!b){
             if(typeof(temp.focus_clicked_event) == "function"){
                 b = temp.focus_clicked_event();
@@ -1926,214 +2002,287 @@ const ui_event_loop = function(){
 
 p5.prototype.registerMethod("post",ui_event_loop);
 
-
 // ------------------------------
 
 // ui/ui.js
-
 class BoxUi{
-    constructor(parent,name,w,h){
-  
-      this.parent = parent;
-      this.name = name;
-  
-      if(this.name == null){
-        this.name = `${Math.random()}`;
-      }
-  
-      this.bg_color = color(255);
-      this.fg_color = color(255);
-      let no_color = color(0,0);
-  
-      this.margin = {t:8,b:8,l:8,r:8};
-      this.size = {w:w != null ? w : 40,h:h != null ? h : 20};
-      this.bg_rounds = [0,0,0,0];
-      this.fg_rounds = [0,0,0,0];
-  
-      this.bg = new ContainerUi("hortz",this.parent,this.name+"_bg");
-      this.bg.state.fill_color = this.bg_color;
-      this.bg.set_size_const(true,true);
-      this.bg.state.stroke_color = no_color;
-  
-  
-      this.margin_left = new ContainerUi("hortz",this.bg,this.name+"_margin_left");
-      this.margin_left.set_size_const(true,true);
-      this.margin_left.set_size(this.margin.l,this.size.h+this.margin.t+this.margin.b);
-      this.margin_left.state.fill_color = no_color;
-      this.margin_left.state.stroke_color = no_color;
-  
-      this.body_bg = new ContainerUi("vert",this.bg,this.name+"_body_bg");
-      this.body_bg.set_size_const(true,true);
-      this.body_bg.state.fill_color = no_color;
-      this.body_bg.state.stroke_color = no_color;
-  
-      this.margin_top = new ContainerUi("hortz",this.body_bg,this.name+"_margin_top");
-      this.margin_top.set_size_const(true,true);
-      this.margin_top.set_size(this.size.w,this.margin.t);
-      this.margin_top.state.fill_color = no_color;
-      this.margin_top.state.stroke_color = no_color;
-  
-      this.body = new ContainerUi("hortz",this.body_bg,this.name+"_body");
-      this.body.set_size_const(true,true);
-      this.body.set_size(this.size.w,this.size.h);
-      this.body.state.fill_color = this.fg_color;
-      this.body.state.stroke_color = no_color;
-  
-      this.margin_bottom = new ContainerUi("hortz",this.body_bg,this.name+"_margin_bottom");
-      this.margin_bottom.set_size_const(true,true);
-      this.margin_bottom.set_size(this.size.w,this.margin.b);
-      this.margin_bottom.state.fill_color = no_color;
-      this.margin_bottom.state.stroke_color = no_color;
-  
-      this.margin_right = new ContainerUi("hortz",this.bg,this.name+"_margin_right");
-      this.margin_right.set_size_const(true,true);
-      this.margin_right.set_size(this.margin.r,this.size.h+this.margin.t+this.margin.b);
-      this.margin_right.state.fill_color = color(0,0);
-      this.margin_right.state.stroke_color = color(0,0);
-  
-    }
-  
-    update_size(){
-      this.margin_left.set_size(this.margin.l,this.size.h+this.margin.t+this.margin.b);
-      this.margin_top.set_size(this.size.w,this.margin.t);
-      this.body.set_size(this.size.w,this.size.h);
-      this.margin_bottom.set_size(this.size.w,this.margin.b);
-      this.margin_right.set_size(this.margin.r,this.size.h+this.margin.t+this.margin.b);
-    }
-  
-    set_margin(t,r,b,l){
-      this.margin.t = t != null ? t : this.margin.t;
-      this.margin.r = r != null ? r : this.margin.r;
-      this.margin.b = b != null ? b : this.margin.b;
-      this.margin.l = l != null ? l : this.margin.l;
-      this.update_size();
-    }
-  
-    set_size(w,h){
-      this.size.w = w != null ? w : this.size.w;
-      this.size.h = h != null ? h : this.size.h;
-      this.update_size();
+  constructor(parent,name,w,h){
+
+    this.parent = parent;
+    this.name = name;
+
+    if(this.name == null){
+      this.name = `${Math.random()}`;
     }
 
-    set_text(t){
-        this.body.set_text(t);
-        // this.body.show_text(true);
+    this.bg_color = color(255);
+    this.fg_color = color(255);
+    let no_color = color(0,0);
+
+    this.margin = {t:8,b:8,l:8,r:8};
+    this.size = {w:w != null ? w : 40,h:h != null ? h : 20};
+    this.bg_rounds = [0,0,0,0];
+    this.fg_rounds = [0,0,0,0];
+
+    this.bg = new ContainerUi("hortz",this.parent,this.name+"_bg");
+    this.bg.state.fill_color = this.bg_color;
+    this.bg.set_size_const(true,true);
+    this.bg.state.stroke_color = no_color;
+
+
+    this.margin_left = new ContainerUi("hortz",this.bg,this.name+"_margin_left");
+    this.margin_left.set_size_const(true,true);
+    this.margin_left.set_size(this.margin.l,this.size.h+this.margin.t+this.margin.b);
+    this.margin_left.state.fill_color = no_color;
+    this.margin_left.state.stroke_color = no_color;
+
+    this.body_bg = new ContainerUi("vert",this.bg,this.name+"_body_bg");
+    this.body_bg.set_size_const(true,true);
+    this.body_bg.state.fill_color = no_color;
+    this.body_bg.state.stroke_color = no_color;
+
+    this.margin_top = new ContainerUi("hortz",this.body_bg,this.name+"_margin_top");
+    this.margin_top.set_size_const(true,true);
+    this.margin_top.set_size(this.size.w,this.margin.t);
+    this.margin_top.state.fill_color = no_color;
+    this.margin_top.state.stroke_color = no_color;
+
+    this.body = new ContainerUi("hortz",this.body_bg,this.name+"_body");
+    this.body.set_size_const(true,true);
+    this.body.set_size(this.size.w,this.size.h);
+    this.body.state.fill_color = this.fg_color;
+    this.body.state.stroke_color = no_color;
+
+    this.margin_bottom = new ContainerUi("hortz",this.body_bg,this.name+"_margin_bottom");
+    this.margin_bottom.set_size_const(true,true);
+    this.margin_bottom.set_size(this.size.w,this.margin.b);
+    this.margin_bottom.state.fill_color = no_color;
+    this.margin_bottom.state.stroke_color = no_color;
+
+    this.margin_right = new ContainerUi("hortz",this.bg,this.name+"_margin_right");
+    this.margin_right.set_size_const(true,true);
+    this.margin_right.set_size(this.margin.r,this.size.h+this.margin.t+this.margin.b);
+    this.margin_right.state.fill_color = color(0,0);
+    this.margin_right.state.stroke_color = color(0,0);
+
+  }
+
+  change_parent(p,i){
+    if(p != null && this.parent != null){
+      this.bg.remove();
+      p.add_child(this.bg,i);
     }
   }
+
+  remove(){
+    return this.bg.remove();
+  }
+
+  update_size(){
+    this.margin_left.set_size(this.margin.l,this.size.h+this.margin.t+this.margin.b);
+    this.margin_top.set_size(this.size.w,this.margin.t);
+    this.body.set_size(this.size.w,this.size.h);
+    this.margin_bottom.set_size(this.size.w,this.margin.b);
+    this.margin_right.set_size(this.margin.r,this.size.h+this.margin.t+this.margin.b);
+  }
+
+  set_margin(t,r,b,l){
+    this.margin.t = t != null ? t : this.margin.t;
+    this.margin.r = r != null ? r : this.margin.r;
+    this.margin.b = b != null ? b : this.margin.b;
+    this.margin.l = l != null ? l : this.margin.l;
+    this.update_size();
+  }
+
+  set_size(w,h){
+    this.size.w = w != null ? w : this.size.w;
+    this.size.h = h != null ? h : this.size.h;
+    this.update_size();
+  }
+
+  set_text(t){
+      this.body.set_text(t);
+      // this.body.show_text(true);
+  }
+
+  set_bg_color(f){
+    this.bg_color = f != null ? f : this.bg_color;
+    this.bg.state.fill_color = this.bg_color;
+  }
+
+  set_fg_color(f){
+    this.fg_color = f != null ? f : this.fg_color;
+    this.body.state.fill_color = this.fg_color;
+  }
+}
 
 
 
 class GridUi{
 
-    constructor(p,name,row,dir){
-      this.parent = p;
-      this.row = row;
-      this.name = name;
-      this.dir = dir != null ? dir : "vert";
-      // this.count = 0;
-  
-      if(this.name == null){
-        this.name = `${Math.random()}`;
-      }
-  
-      this.element = new ContainerUi(this.dir,this.parent,this.name+"_parent");
-  
-      this.list = [];
-      for(let i=0 ; i<this.row ; i++){
-        let p1 = new ContainerUi(this.dir == "hortz" ? "vert" : "hortz", this.element,this.name+"_row");
-        p1.set_size_const(true,true);
-        this.list.push(p1);
-      }
+  constructor(p,name,row,dir){
+    this.parent = p;
+    this.row = row;
+    this.name = name;
+    this.dir = dir != null ? dir : "vert";
+    // this.count = 0;
+
+    if(this.name == null){
+      this.name = `${Math.random()}`;
     }
-  
-    get_row(i){
-      if( i >= this.row) return;
-      return this.list[i];
-    }
-  
-    set_row_constant(i,w_const,h_const){
-      let p = this.get_row(i);
-      if(p == null) return;
-      p.set_size_const(w_const,h_const);
-    }
-  
-    add_row(i){
-      if(i > this.row) return;
+
+    this.element = new ContainerUi(this.dir,this.parent,this.name+"_parent");
+
+    this.list = [];
+    for(let i=0 ; i<this.row ; i++){
       let p1 = new ContainerUi(this.dir == "hortz" ? "vert" : "hortz", this.element,this.name+"_row");
       p1.set_size_const(true,true);
-      this.list.splice(i, 0, p1);
+      this.list.push(p1);
     }
-  
-    remove_row(i){
-      if(i >= this.row) return;
-      let p = this.get_row(i);
-      p.remove();
-      this.list.splice(i,1);
-    }
-  
-    make_row_expanded(i){
-      let p = this.get_row(i);
-      if(p == null) return;
-      p.set_size_const(false,false);
-    }
-  
   }
+
+  change_parent(p,i){
+    if(p != null && this.parent != null){
+      this.element.remove();
+      p.add_child(this.element,i);
+    }
+  }
+
+  remove(){
+    return this.element.remove();
+  }
+
+  get_row(i){
+    if( i >= this.row) return;
+    return this.list[i];
+  }
+
+  add_child(i,child,j){
+    let p1 = this.get_row(i);
+    if(p1 != null){
+      p1.add_child(child,j);
+    }
+  }
+
+  set_row_constant(i,w_const,h_const){
+    let p = this.get_row(i);
+    if(p == null) return;
+    p.set_size_const(w_const,h_const);
+  }
+
+  add_row(i){
+    if(i > this.row) return;
+    let p1 = new ContainerUi(this.dir == "hortz" ? "vert" : "hortz", this.element,this.name+"_row");
+    p1.set_size_const(true,true);
+    this.list.splice(i, 0, p1);
+  }
+
+  remove_row(i){
+    if(i >= this.row) return;
+    let p = this.get_row(i);
+    p.remove();
+    this.list.splice(i,1);
+  }
+
+  make_row_expanded(i){
+    let p = this.get_row(i);
+    if(p == null) return;
+    p.set_size_const(false,false);
+  }
+
+}
 
 
 class ExpandedUi{
 
-    constructor(p,name,dir){
-      this.name = name;
-      this.dir = dir != null ? dir : "hortz";
-    
-      if(this.name == null){
-        this.name = `${Math.random()}`;
-      }
-      this.parent = p;
-      this.element = new ContainerUi(this.dir,this.parent,this.name);
-      this.element.state.fill_color = color(255);
-    }
-}
+  constructor(p,name,dir){
+    this.name = name;
+    this.dir = dir != null ? dir : "hortz";
   
+    if(this.name == null){
+      this.name = `${Math.random()}`;
+    }
+    this.parent = p;
+    this.element = new ContainerUi(this.dir,this.parent,this.name);
+    this.element.state.fill_color = color(255);
+  }
+
+  change_parent(p,i){
+    if(p != null && this.parent != null){
+      this.element.remove();
+      p.add_child(this.element,i);
+    }
+  }
+
+  remove(){
+    return this.element.remove();
+  }
+
+}
+
 
 class SliderUi{
 
-    constructor(p,name,dir,size_w,size_h,amt){
-      this.parent = p;
-      this.name = name;
-      this.amt = amt != null ? amt : 0;
-      this.size_w = size_w != null ? size_w : 100;
-      this.size_h = size_h != null ? size_h : 100;
-  
-      let temp = this;
-      while(temp != null){
-        if(temp.parent == null){
-          this.window = temp;
-        }
-        temp = temp.parent;
+  constructor(p,name,dir,size_w,size_h,amt){
+    this.parent = p;
+    this.name = name;
+    this.amt = amt != null ? amt : 0;
+    this.size_w = size_w != null ? size_w : 100;
+    this.size_h = size_h != null ? size_h : 100;
+
+    let temp = this;
+    while(temp != null){
+      if(temp.parent == null){
+        this.window = temp;
       }
-    
-      if(this.name == null){
-        this.name = `${Math.random()}`;
-      }
-  
-      this.dir = dir != null ? (dir == "hortz" ? "vert" : "hortz") : "vert";
-  
-      this.slider = new ContainerUi(this.dir,this.parent,this.name);
-      this.slider.set_size_const(true,true);
-      this.slider.set_size(this.size_w,this.size_h);
-      this.slider.state.fill_color = color(200);
-      this.slider_per = new ContainerUi("hortz",this.slider,this.name+"_per");
-      this.slider_per.set_size_per(this.amt,this.amt);
-      this.slider_per.state.fill_color = color(120);
-      // this.slider_per.state.stroke_color = color(0);
-      this.slider.set_focus_pressed_event(()=>{
-        let p1 = mouseX-this.window.px-this.slider.x;
-        let p2 = mouseY-this.window.py-this.slider.y;
-        this.amt = this.dir == "vert" ? (p1>0 ? p1 : 0)/this.slider.w : (p2>0 ? p2 : 0)/this.slider.h; 
-        this.slider_per.set_size_per(this.amt,this.amt);
-        this.window.compute_box();
-      })
+      temp = temp.parent;
     }
-}
   
+    if(this.name == null){
+      this.name = `${Math.random()}`;
+    }
+
+    this.dir = dir != null ? (dir == "hortz" ? "vert" : "hortz") : "vert";
+
+    this.slider = new ContainerUi(this.dir,this.parent,this.name);
+    this.slider.set_size_const(true,true);
+    this.slider.set_size(this.size_w,this.size_h);
+    this.slider.state.fill_color = color(200);
+    this.slider_per = new ContainerUi("hortz",this.slider,this.name+"_per");
+    this.slider_per.set_size_per(this.amt,this.amt);
+    this.slider_per.state.fill_color = color(120);
+    // this.slider_per.state.stroke_color = color(0);
+    this.slider.set_focus_pressed_event(()=>{
+      let p1 = mouseX-this.window.px-this.slider.x;
+      let p2 = mouseY-this.window.py-this.slider.y;
+      this.amt = this.dir == "vert" ? (p1>0 ? p1 : 0)/this.slider.w : (p2>0 ? p2 : 0)/this.slider.h; 
+      this.slider_per.set_size_per(this.amt,this.amt);
+      this.window.compute_box();
+    })
+  }
+
+  change_parent(p,i){
+    if(p != null && this.parent != null){
+      this.slider.remove();
+      p.add_child(this.slider,i);
+    }
+  }
+
+  remove(){
+    return this.slider.remove();
+  }
+
+  set_dir(dir){
+    this.dir = dir != null ? (dir == "hortz" ? "vert" : "hortz") : "vert";
+    this.slider.set_direction(this.dir);
+  }
+
+
+  set_size(w,h){
+    this.size_w = w != null ? w : this.size_w;
+    this.size_h = h != null ? h : this.size_h;
+    this.slider.set_size(this.size_w,this.size_h);
+    this.amt = this.dir == "vert" ? (p1>0 ? p1 : 0)/this.slider.w : (p2>0 ? p2 : 0)/this.slider.h;  
+    this.slider_per.set_size_per(this.amt,this.amt);
+  }
+}

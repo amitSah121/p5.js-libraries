@@ -82,13 +82,13 @@ set_pos() // aborts
 
   set_text(s){
     this.text = s != null ? s : this.text;
-    if(this.text_wrap == WORD){
-      if(textWidth(this.text) > this.original_list[2]){
-        this.show_text = false;
-      }else{
-        this.show_text = true;
-      }
-    }
+    // if(this.text_wrap == WORD){
+    //   if(textWidth(this.text) > this.original_list[2]){
+    //     this.show_text = false;
+    //   }else{
+    //     this.show_text = true;
+    //   }
+    // }
   }
 
   set_text_color(c){
@@ -187,7 +187,7 @@ set_pos() // aborts
       graphics.stroke(this.stroke_color);
       graphics.rect(x,y,w,h,...this.rounds);
     }else{
-      graphics.image(x,y,w,h);
+      graphics.image(this.image,x,y,w,h);
     }
     if(this.show_text) {
       graphics.fill(this.text_color);

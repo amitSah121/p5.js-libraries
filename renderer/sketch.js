@@ -1,3 +1,4 @@
+
 let a = {};
 
 
@@ -33,6 +34,10 @@ function setup(){
   a.New.set_text("New");
   a.s2 = new ExpandedUi(a.a1.get_row(1),"s2");
 
+  //  testing to see if removing works as expected
+  // a.File.remove(); 
+  // a.a1.add_child(1,a.File.bg,1);
+
   a.TextArea = new ExpandedUi(a.a1.get_row(2),"TextArea");
   a.TextArea.element.state.fill_color = color(225);
   a.TextArea.element.set_text_params([LEFT,TOP]);
@@ -59,7 +64,7 @@ function draw(){
   a.a.draw();
 
   if(is_mouse_dragged){
-    console.log("helli")
+    // console.log("helli")
     // a.a1.remove_row(1);
     // a.a.compute_box();
   }

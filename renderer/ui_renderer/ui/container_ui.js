@@ -29,6 +29,9 @@ class ContainerUi{
         this.text_align = [CENTER,CENTER];
         this.text_style = NORMAL;
         this.text_leading = 17.5*(this.text_size/3); // default text leading
+        this.image = null;
+        this.show_image = false;
+        this.disable_events = false;
         
         this.hover_event = null;
         this.focus_event = null;
@@ -57,6 +60,7 @@ class ContainerUi{
             this.py = this.y;
 
             this.pg = createGraphics(this.state.w,this.state.h);
+            this.disable_window_events = false;
         }else{
             this.parent.add_child(this);
             this.state.x = this.x =  0;
@@ -82,6 +86,15 @@ class ContainerUi{
             this.state.stroke_color = color(0,0);
         }
     
+    }
+
+    set_disable_event(b){
+        this.disable_events = b != null ? b : this.disable_events;
+    }
+
+    set_disable_window_event(b){
+        if(this.parent != null) return;
+        this.disable_window_events = b != null ? b : this.disable_window_events;
     }
 
     set_hover_event(f){
@@ -167,6 +180,27 @@ class ContainerUi{
         // }
     }
 
+    set_direction(dir){
+        this.state.dir = dir != null ? dir : this.state.dir;
+    }
+
+
+    set_image(img){
+        this.image = img != null ? img : this.image;
+    }
+
+    set_show_image(s){
+        this.show_image = s != null ? s : this.show_image;
+    }
+
+    set_fill_color(c){
+        this.state.fill_color = c != null ? c : this.state.fill_color;
+    }
+
+    set_stroke_color(c){
+        this.state.stroke_color = c != null ? c : this.state.stroke_color;
+    }
+
     set_text_color(c){
         this.text_color = c != null ? c : this.text_color;
     }
@@ -185,12 +219,18 @@ class ContainerUi{
         this.text_leading = leading != null ? leading : this.text_leading;
     }
 
-    add_child(p){
-        this.child.push(p);
+    add_child(p,i){
+        if(p == null) return;
+        if(i == null){
+            this.child.push(p);
+        }else{
+            this.child.splice(i, 0, p);
+        }
+        p.parent = this;
     }
 
     change_parent(p){
-        if(p != null){
+        if(p != null && this.parent != null){
             let that = this;
             this.parent.child = this.parent.child.filter(x => x != that);
             this.parent = p;
@@ -201,8 +241,9 @@ class ContainerUi{
     remove(){
         let that = this;
         this.parent.child = this.parent.child.filter(x => x != that);
+        let p = this.parent;
         this.parent = 1; // to avoid clashing with other real parent elements
-
+        return p;
     }
 
     collidePoint(x,y){
@@ -521,6 +562,8 @@ class ContainerUi{
         ui_rect.set_show_text(this.show_text);
         ui_rect.set_text_color(this.text_color);
         ui_rect.set_text_params(this.text_align,this.text_size,this.text_style,this.text_leading);
+        ui_rect.set_image(this.image);
+        ui_rect.set_show_image(this.show_image);
         renderer(pg,ui_rect,x,y,w,h);
         let i = 0;
         let temp = this.child[i];

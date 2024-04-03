@@ -5,6 +5,11 @@ const compute_hover = function(p,j,px,py){
     let i=0;
     let temp = p[i];
     while(temp != null){
+        if(temp.disable_window_events == true){
+            i++;
+            temp = p[i];
+            continue;
+        }
         if(temp.collidePoint(mouseX-(px != null ? px : temp.px),mouseY-(py != null ? py :temp.py))){
             // assert(mouseX,mouseY,i,j);
             hovered[j != null ? j : i].push(temp);
@@ -21,6 +26,11 @@ const compute_focus = function(p,px,py){
     let i=0;
     let temp = p[i];
     while(temp != null){
+        if(temp.disable_window_events == true){
+            i++;
+            temp = p[i];
+            continue;
+        }
         if(!is_mouse_pressed){
             mouse_pressed_during_focus_pressed = false;
         }
@@ -55,6 +65,10 @@ const compute_hover_event = function(){
     while(temp != null){
         let temp1 = temp.pop();
         while(temp1 != null){
+            if(temp1.disable_events == true){
+                temp1 = temp.pop();
+                continue;
+            }
             if(!b){
                 if(typeof(temp1.hover_event) == "function"){
                     b = temp1.hover_event();
@@ -75,6 +89,11 @@ const compute_focus_event = function(){
     let temp = focused[i];
     let b = false;
     while(temp != null){
+        if(temp.disable_events == true){
+            i--;
+            temp = hovered[i];
+            continue;
+        }
         if(!b){
             if(typeof(temp.focus_event) == "function"){
                 b = temp.focus_event();
@@ -94,6 +113,10 @@ const compute_hover_out_event = function(p){
     let temp = p.pop();
     let b = false;
     while(temp != null){
+        if(temp.disable_events == true){
+            temp = p.pop();
+            continue;
+        }
         if(!b){
             if(typeof(temp.hover_out_event) == "function"){
                 b = temp.hover_out_event();
@@ -110,6 +133,10 @@ const compute_focus_pressed_event = function(){
     let temp = focused_pressed.pop();
     let b = false;
     while(temp != null){
+        if(temp.disable_events == true){
+            temp = focused_pressed.pop();
+            continue;
+        }
         if(!b){
             if(typeof(temp.focus_pressed_event) == "function"){
                 b = temp.focus_pressed_event();
@@ -126,6 +153,10 @@ const compute_focus_out_event = function(){
     let temp = focused.pop();
     let b = false;
     while(temp != null){
+        if(temp.disable_events == true){
+            temp = focused.pop();
+            continue;
+        }
         if(!b){
             if(typeof(temp.focus_out_event) == "function"){
                 b = temp.focus_out_event();
@@ -142,6 +173,10 @@ const compute_focus_clicked_event = function(){
     let temp = focus_clicked.pop();
     let b = false;
     while(temp != null){
+        if(temp.disable_events == true){
+            temp = focus_clicked.pop();
+            continue;
+        }
         if(!b){
             if(typeof(temp.focus_clicked_event) == "function"){
                 b = temp.focus_clicked_event();

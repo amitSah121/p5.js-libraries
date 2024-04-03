@@ -163,7 +163,7 @@ function draw() {
 
 
 ---------------------------------------------
-Ui.js
+ContainerUi.js
 note: you have to call compute_box on parent everytime any changes is made on any children
 
 e.g.
@@ -214,6 +214,7 @@ function draw() {
   }
 }
 
+--------------------------------
 
 global_ui_event.js
 
@@ -261,6 +262,59 @@ function draw() {
 
 }
 
+e.g.
+
+
+
+let a = {};
+
+function setup() {
+  createCanvas(400, 400);
+
+  a.a = new ContainerUi("hortz",null,null,[300,300]);
+  a.a.set_fill_color(color(255));
+  // a.a.set_disable_window_event(true);
+  a.a.set_hover_event(()=>console.log("a_hover"))
+  a.a1 = new ContainerUi("hortz",a.a,"a1");
+  // a.a1.set_weight(0);
+  a.a1.set_size_const(true,true);
+  a.a1.set_size(80,30);
+  // a.a1.set_disable_event(true);
+  a.a1.set_hover_event(()=>{
+    console.log("a1_hover");
+    // return true;
+  })
+  a.a1.state.fill_color = color(255,0,0);
+  a.a2 = new ContainerUi("vert",a.a,"a2");
+  a.a2.state.fill_color = color(255,255,0);
+  a.a2.set_focus_clicked_event(()=>{
+    console.log("a2_clicked")
+  })
+  a.a3 = new ContainerUi("hortz",a.a,"a3");
+  a.a3.state.fill_color = color(255,0,255);
+
+  let p = a.a1.remove();
+  p.add_child(a.a1,1);
+
+
+  a.a.compute_box();
+
+  assert(a)
+
+}
+
+function draw() {
+  background(220);
+  a.a.draw();
+
+}
+
+
+
+
+-----------------------------
+
+ui.js
 
 e.g.
 
