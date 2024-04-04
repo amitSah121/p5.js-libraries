@@ -1071,11 +1071,12 @@ set_pos() // aborts
     this.show_text = f != null ? f : this.show_text;
   }
 
-  set_text_params(align,size,style,leading){
+  set_text_params(align,size,wrap,style,leading){
     this.text_align[0] = align[0] != null ? align[0] : this.text_align[0];
     this.text_align[1] = align[1] != null ? align[1] : this.text_align[1];
     this.text_size = size != null ? size : this.size;
     this.text_style = style != null ? style : this.style;
+    this.text_wrap = wrap != null ? wrap : this.text_wrap;
     this.text_leading = leading != null ? leading : this.text_leading;
   }
 
@@ -1393,14 +1394,19 @@ class ContainerUi{
         this.show_text = f != null ? f : this.show_text;
     }
 
-    set_text_params(align,size,style,leading){
+    set_text_params(align,size,wrap,style,leading){
         if(align != null){
             this.text_align[0] = align[0] != null ? align[0] : this.text_align[0];
             this.text_align[1] = align[1] != null ? align[1] : this.text_align[1];
         }
+        this.text_wrap = wrap != null ? wrap : this.text_wrap;
         this.text_size = size != null ? size : this.text_size;
         this.text_style = style != null ? style : this.text_style;
-        this.text_leading = leading != null ? leading : this.text_leading;
+        if(leading == -1)
+          this.text_leading = 17.5*(this.text_size/3);
+        else
+          this.text_leading = leading != null ? leading : this.text_leading;
+    
     }
 
     add_child(p,i){
@@ -1745,7 +1751,7 @@ class ContainerUi{
         ui_rect.set_text(this.text);
         ui_rect.set_show_text(this.show_text);
         ui_rect.set_text_color(this.text_color);
-        ui_rect.set_text_params(this.text_align,this.text_size,this.text_style,this.text_leading);
+        ui_rect.set_text_params(this.text_align,this.text_size,this.text_wrap,this.text_style,this.text_leading);
         ui_rect.set_image(this.image);
         ui_rect.set_show_image(this.show_image);
         renderer(pg,ui_rect,x,y,w,h);

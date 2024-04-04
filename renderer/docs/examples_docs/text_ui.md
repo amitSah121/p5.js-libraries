@@ -1,12 +1,14 @@
 
+
+
+```js
+
 let a = {};
-let path = "./docs/media/images/ui_2.png"
 
 
 
 function setup(){
   createCanvas(400,400);
-  let p = loadImage(path);
 
   a.a = new ContainerUi("hortz",null,"parent",[300,300]);
   // a.a.state.fill_color = color(255);
@@ -47,8 +49,6 @@ function setup(){
     // console.log(current_key_released,is_key_released)
     a.TextArea.element.set_text(a.TextArea.element.text+(is_key_released ? current_key_pressed : ""));
   })
-  a.TextArea.element.set_image(p);
-  a.TextArea.element.set_show_image(true);
 
 
   a.Footer = new BoxUi(a.a1.get_row(3),"Footer",60);
@@ -75,3 +75,5 @@ function draw(){
 
 }
 
+
+```

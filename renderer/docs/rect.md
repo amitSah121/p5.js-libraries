@@ -4,6 +4,8 @@
 ## Rect class extends Shape class
 These classes works as a state function , that means it preserves the original_list and then apply the rules(like angle, transformations ) to create or update new list.
 
+Note: This class is a very basic example of making a shape and using it to render on screen. Developers can make their own class to take advantage of Shape class and renderer() method to their own good. 
+
 ### Functions and Variables
 
 #### Variables

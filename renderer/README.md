@@ -4,6 +4,8 @@
 
 # UI Renderer Documentation
 
+![](./media/images/sketch_1.png)
+
 
 ## Introduction
 
@@ -23,7 +25,9 @@ This library provides multiple independent files that can be used independently 
     - ui.js
 ```
 
-I will be deeply greatful to know if you are interested in helping out to give a better shape to this project by either sharing about bugs and fixes or contributing by making more beautiful ui tools and utilities with the tools I have tried to provide with my ui system.
+#### I will be deeply greatful to know if you are interested in helping out to give a better shape to this project by either sharing about bugs and fixes or contributing by making more beautiful ui tools and utilities with the tools I have tried to provide with my ui system.
+
+### Thankyou
 
 -------------------------------------
 [Next](./docs/introduction.md)

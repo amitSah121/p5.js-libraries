@@ -99,9 +99,10 @@ set_pos() // aborts
     this.show_text = f != null ? f : this.show_text;
   }
 
-  set_text_params(align,size,style,leading){
+  set_text_params(align,size,wrap,style,leading){
     this.text_align[0] = align[0] != null ? align[0] : this.text_align[0];
     this.text_align[1] = align[1] != null ? align[1] : this.text_align[1];
+    this.text_wrap = wrap != null ? wrap : this.text_wrap;
     this.text_size = size != null ? size : this.size;
     this.text_style = style != null ? style : this.style;
     this.text_leading = leading != null ? leading : this.text_leading;
