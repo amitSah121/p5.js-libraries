@@ -10,45 +10,40 @@ function setup(){
   a.a.set_window_pos(100,100);
   a.a.set_fill_color(color(125));
 
-  a.a1 = new ContainerUi("hortz",a.a,"a1");
+  a.a1 = new GridUi(a.a,"Grid",4);
 
-  a.a11 = new BoxUi(a.a1,"a11");
-  a.a11.set_text("A1");
+  // row 0
+  a.a1.set_row_constant(0,false);
+  a.a111 = new ExpandedUi(a.a1.get_row(0),"S1");
+  a.a112 = new BoxUi(a.a1.get_row(0),"a11",120,30);
+  a.a112.set_text("Paragraph");
+  a.a112.body.set_text_params([null,BOTTOM],24,null,-1);
+  a.a113 = new ExpandedUi(a.a1.get_row(0),"S2");
 
-  a.a12 = new SliderUi(a.a1,"a12")
-  a.a12.slider.set_text("A12")
+  // row 1
 
-
-  a.a13 = new BoxUi(a.a1,"a13",40,60);
-  a.a13.set_text("A3");
-
-//   a.a1 = new GridUi(a.a,"grid",4);
-//   a.a1.set_row_constant(0,false);
-
-//   // in row 0
-//   a.a11 = new BoxUi(a.a1.get_row(0),"Box");
-// //   a.a11.set_fg_color(color(125,125,0));
-//   a.a11.set_text("a11");
-//   a.a12 = new ExpandedUi(a.a1.get_row(0),"spacer");
-// //   a.a12.set_text("a11");
-//   a.a13 = new BoxUi(a.a1.get_row(0),"Box");
-//   a.a13.set_text("a13");
-// //   a.a13.set_fg_color(color(125,125,0));
-//   a.a14 = new BoxUi(a.a1.get_row(0),"Box");
-// //   a.a14.set_fg_color(color(125,125,0));
-//   a.a14.set_text("a14");
-
-//   // for row 1
-//   a.a1.make_row_expanded(1);
+  a.a1.set_row_constant(1,false);
+  a.a111 = new ExpandedUi(a.a1.get_row(1),"S1");
+  a.a112 = new BoxUi(a.a1.get_row(1),"a11",150,20);
+  a.a112.set_text("One Way Paragraph.");
+  a.a113 = new ExpandedUi(a.a1.get_row(1),"S2");
 
 
-//   // for row 2
-//   a.a15 = new BoxUi(a.a1.get_row(2),"Box");
-//   a.a15.set_text("a15");
-//   a.a16 = new BoxUi(a.a1.get_row(2),"Box");
-//   a.a16.set_text("a16");
+  // row 2
 
-  a.a.compute_box();
+  a.a1.set_row_constant(2,false);
+  a.a111 = new ExpandedUi(a.a1.get_row(2),"S1");
+  a.a112 = new BoxUi(a.a1.get_row(2),"a11",150,70);
+  a.a112.set_text("Even can use for loops to fill in the paragraphs as in previous Presentation example.");
+  a.a113 = new ExpandedUi(a.a1.get_row(2),"S2");
+
+  // row 3
+  a.a1.make_row_expanded(3);
+  a.a1.get_row(3).set_fill_color(color(255))
+
+  a.a.compute_box()
+
+  console.log(a);
 
 }
 

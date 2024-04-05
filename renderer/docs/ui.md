@@ -29,6 +29,8 @@ Normal variables:
 7) bg_rounds = [], by default [0,0,0,0]
 8) fg_rounds = [], by default [0,0,0,0]
 
+note: margin is added on top of width and height so to adjust total size you can either resize the ui by set_size(c.size.w-c.margin.l-margin.r,c.size.h-c.margin.t-margin.b)
+
 container_ui variables:
 
 0) Constructor(parent,name,width,height) -- note width and height are optional
@@ -266,7 +268,7 @@ Note: Also if "hortz", list rows acts as row, if "vert" list rows acts as column
 5) set_row_constant(index,w_const,h_const)
 6) add_row(index_at) -- index is optional then it adds at last
 7) remove_row(index_at) -- index is optional then it deletes from last
-8) make_row_expanded
+8) make_row_expanded(index)
 
  ### Example
 
@@ -324,7 +326,117 @@ function draw(){
 }
  ```
 
+2) Two ways of making a presentation:
+
+  a) In this example, it shows that you can first compute the size of parent ui to how it fits in window and then add child using that computed width
+
+```js
+
+let a = {};
+
+
+
+function setup(){
+  createCanvas(400,400);
+
+  a.a = new ContainerUi("hortz",null,"parent",[200,200])
+  a.a.set_window_pos(100,100);
+  a.a.set_fill_color(color(255));
+
+  a.a1 = new ContainerUi("vert",a.a,"a1");
+
+  // first call a.a.compute_box() to get the size of a.a1 after computation
+  a.a.compute_box();
+
+  // now use the computed w and h of a.a1 to set the size of BoxUi
+  // note dont't use a.a1.state.w since it is still 0, use a.a1.w which is currently computer width
+  a.a11 = new BoxUi(a.a1,"a11",a.a1.w,40);
+  a.a11.set_text("Pargraph");
+  a.a11.set_margin(0,0,10,0);
+  a.a11.body.set_text_params([CENTER,BOTTOM],24,null,-1);
+
+  a.a12 = new BoxUi(a.a1,"a12",a.a1.w,20);
+  // to adjust the size according to margin since margin is added upon the given body size
+  a.a12.set_size(a.a1.w-a.a12.margin.l*2,20);
+  a.a12.set_text("One way Presentation");
+  a.a12.body.set_text_params([CENTER,BOTTOM]);
+
+  a.a.compute_box()
+
+  console.log(a);
+
+}
+
+function draw(){
+  background(0);
+  a.a.draw();
+
+}
+```
+
+  b) In this we use spacers and expansions to make ui look beautiful.
+
+```js
+
+
+let a = {};
+
+function setup(){
+  createCanvas(400,400);
+
+  a.a = new ContainerUi("hortz",null,"parent",[200,200])
+  a.a.set_window_pos(100,100);
+  a.a.set_fill_color(color(125));
+
+  a.a1 = new GridUi(a.a,"Grid",4);
+
+  // row 0
+  a.a1.set_row_constant(0,false);
+  a.a111 = new ExpandedUi(a.a1.get_row(0),"S1");
+  a.a112 = new BoxUi(a.a1.get_row(0),"a11",120,30);
+  a.a112.set_text("Paragraph");
+  a.a112.body.set_text_params([null,BOTTOM],24,null,-1);
+  a.a113 = new ExpandedUi(a.a1.get_row(0),"S2");
+
+  // row 1
+
+  a.a1.set_row_constant(1,false);
+  a.a111 = new ExpandedUi(a.a1.get_row(1),"S1");
+  a.a112 = new BoxUi(a.a1.get_row(1),"a11",150,20);
+  a.a112.set_text("One Way Paragraph.");
+  a.a113 = new ExpandedUi(a.a1.get_row(1),"S2");
+
+
+  // row 2
+
+  a.a1.set_row_constant(2,false);
+  a.a111 = new ExpandedUi(a.a1.get_row(2),"S1");
+  a.a112 = new BoxUi(a.a1.get_row(2),"a11",150,70);
+  a.a112.set_text("Even can use for loops to fill in the paragraphs as in previous Presentation example.");
+  a.a113 = new ExpandedUi(a.a1.get_row(2),"S2");
+
+  // row 3
+  a.a1.make_row_expanded(3);
+  a.a1.get_row(3).set_fill_color(color(255))
+
+  a.a.compute_box()
+
+  console.log(a);
+
+}
+
+function draw(){
+  background(0);
+  a.a.draw();
+
+}
+```
+
+
+
 ### Note: There are many hacks you can do with the variables exposed in this article, since all are container_ui objects
+
+
 ---------------------------------------
-[Next](./examples.md)
+[Next](./utility.md)
 -----------------------------

@@ -1,14 +1,61 @@
+[Previous](./ui.md)
+--------------------------------
+
+### Utility js defines colors and some utility methods
+
+#### Colors
+
+```js
+
+    utility_colors.red = color(244,67,54);
+    utility_colors.pink = color(233,30,99);
+    utility_colors.purple = color(156,39,176);
+    utility_colors.deep_purple = color(103,53,183);
+    utility_colors.indogo = color(63,81,181);
+    utility_colors.blue = color(33,150,243);
+    utility_colors.light_blue = color(135,206,235);
+    utility_colors.cyan = color(0,188,212);
+    utility_colors.aqua = color(0,255,255);
+    utility_colors.teal = color(0,150,136);
+    utility_colors.green = color(76,175,80);
+    utility_colors.light_green = color(139,195,74);
+    utility_colors.lime = color(205,220,57);
+    utility_colors.sand = color(253,245,230);
+    utility_colors.khaki = color(240,230,140);
+    utility_colors.yellow = color(255,235,59);
+    utility_colors.amber = color(255,193,7);
+    utility_colors.orange = color(255,152,0);
+    utility_colors.deep_orange = color(255,87,34);
+    utility_colors.blur_gray = color(96,125,139);
+    utility_colors.brown = color(121,85,72);
+    utility_colors.light_gray = color(241,241,241);
+    utility_colors.gray = color(158,158,158);
+    utility_colors.dark_gray = color(97,97,97);
+    utility_colors.pale_ed = color(255,221,221);
+    utility_colors.pale_yellow = color(255,255,204);
+    utility_colors.pale_green = color(221,255,221);
+    utility_colors.pale_green = color(221,255,255);
+    
+```
+
+
+#### utility_text(key,text) --  returns updated text on the basis of key provided
+
+Note: key is either current_key_pressed, or current_key_released 
+
+1) In this example, a function is appended to key_released_events too make sure it is called every time key is released and updates the text.
+
+![](./media/videos/utility_1.gif)
+
+```js
 
 let a = {};
-let path = "./docs/media/images/ui_2.png"
-
-
+let path = "./docs/media/images/ui_2.png";
 
 function setup(){
   createCanvas(400,400);
   frameRate(120);
 
-  // mouse_clicked_events.push(()=>console.log("helli"))
 
   let p = loadImage(path);
 
@@ -55,14 +102,11 @@ function setup(){
     a.TextArea.element.set_text(utility_text(p1,a.TextArea.element.text));
   })
   a.TextArea.element.set_focus_event(()=>{
-    // console.log(current_key_released,is_key_released)
     b1  = true;
   })
   a.TextArea.element.set_focus_out_event(()=>{
     b1 = false;
   })
-  // a.TextArea.element.set_image(p);
-  // a.TextArea.element.set_show_image(true);
 
 
   a.Footer = new BoxUi(a.a1.get_row(3),"Footer",60);
@@ -85,3 +129,9 @@ function draw(){
 
 }
 
+
+```
+
+---------------------------------------
+[Next](./examples.md)
+-----------------------------

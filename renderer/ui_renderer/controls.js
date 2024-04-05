@@ -9,6 +9,7 @@
 
 let is_key_pressed = false,is_key_released = false, release_count = 0;
 let keyp = [], current_key_pressed = "", current_key_released = "";
+let key_pressed_events = [], key_released_events = [];
 
 
 // checks for key pressed and key released events
@@ -34,6 +35,9 @@ p5.prototype.registerMethod("pre",key_state);
 function keyPressed(e){
   keyp.push(set_key(keyCode,key));
   current_key_pressed = set_key(keyCode,key);
+  for(let i=0 ; i<key_pressed_events.length ; i++){
+    key_pressed_events[i]();
+  }
 }
 
 function keyReleased(e){
@@ -41,6 +45,10 @@ function keyReleased(e){
   is_key_released = true;
   current_key_released = set_key(keyCode,key);
   keyp = keyp.filter(p => p.toUpperCase() != current_key_released.toUpperCase());
+  
+  for(let i=0 ; i<key_released_events.length ; i++){
+    key_released_events[i]();
+  }
 }
 
 
@@ -122,6 +130,7 @@ let mouse_dx = 0,mouse_dy = 0;
 let mouseKey = "", totalTrackPadFinger = 0;
 let screenX = -1, screenY = -1, clientX,clientY;
 let mouse_button_types = ["LEFT","MIDDLE","RIGHT"];
+let mouse_pressed_events = [], mouse_released_events = [], mouse_moved_events = [], mouse_clicked_events = [], mouse_dragges_events = [], mouse_double_clicked_events = [];
 
 let check_mouse_status = function(){
   is_mouse_released = false;
@@ -140,6 +149,9 @@ function mousePressed(e){
   mouse_release_count++;
   mouseKey = mouse_button_types[e.which-1];
   totalTrackPadFinger = e.buttons;
+  for(let i=0 ; i<mouse_pressed_events.length ; i++){
+    mouse_pressed_events[i]();
+  }
 }
 
 function mouseMoved(e){
@@ -149,30 +161,45 @@ function mouseMoved(e){
   mouse_dy = e.clientY - clientY;
   clientX = e.clientX;
   clientY = e.clientY;
+  for(let i=0 ; i<mouse_moved_events.length ; i++){
+    mouse_moved_events[i]();
+  }
 }
 
 function mouseReleased(e){
   is_mouse_released = true;
   mouse_release_count--;
   if(mouse_release_count == 0) is_mouse_pressed = false;
+  for(let i=0 ; i<mouse_released_events.length ; i++){
+    mouse_released_events[i]();
+  }
 }
 
 function mouseClicked(e){
   is_mouse_clicked = true;
   mouseKey = mouse_button_types[e.which-1];
   totalTrackPadFinger = e.buttons;
+  for(let i=0 ; i<mouse_clicked_events.length ; i++){
+    mouse_clicked_events[i]();
+  }
 }
 
 function doubleClicked(e){
   is_mouse_double_clicked = true;
   mouseKey = mouse_button_types[e.which-1];
   totalTrackPadFinger = e.buttons;
+  for(let i=0 ; i<mouse_double_clicked_events.length ; i++){
+    mouse_double_clicked_events[i]();
+  }
 }
 
 function mouseDragged(e){
   is_mouse_dragged = true;
   mouseKey = mouse_button_types[e.which-1];
   totalTrackPadFinger = e.buttons;
+  for(let i=0 ; i<mouse_dragges_events.length ; i++){
+    mouse_dragges_events[i]();
+  }
 }
 
 

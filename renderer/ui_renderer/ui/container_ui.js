@@ -58,6 +58,8 @@ class ContainerUi{
 
             this.px = this.x;
             this.py = this.y;
+            this.pw = this.w;
+            thiw.ph = this.h;
 
             this.pg = createGraphics(this.state.w,this.state.h);
             this.disable_window_events = false;
@@ -133,7 +135,12 @@ class ContainerUi{
     set_pos(x,y){
         this.state.x = x != null ? x : this.state.x;
         this.state.y = y != null ? y : this.state.y;
-    }
+        if(this.parent == null){
+            this.x = this.state.x;
+            this.y = this.state.y;
+            }
+        }
+
 
     set_rounds(b1,b2,b3,b4){
         this.rounds[0] = b1 != null && b1 >= 0? b1 : this.rounds[0];
@@ -158,15 +165,25 @@ class ContainerUi{
         this.state.h_weight = h_weight != null ? h_weight : this.state.h_weight;
     }
 
-    set_size(w,h){
+    set_size(w,h,b){
         this.state.w = w != null ? w : this.state.w;
         this.state.h = h != null ? h : this.state.h;
         if(this.parent == null){
             this.w = this.state.w;
             this.h = this.state.h;
-            this.pg = createGraphics(this.state.w,this.state.h);
+            if(b){
+                this.pw = this.state.w;
+                this.ph = this.state.h;
+                this.pg = createGraphics(this.pw,this.ph);
+            }
         }
         // this.compute_box();
+    }
+
+    set_window_size(w,h){
+        this.pw = w != null ? w : this.pw;
+        this.ph = h != null ? h : this.ph;
+        this.pg = createGraphics(this.pw,this.ph);
     }
 
     set_text(s){
@@ -551,7 +568,7 @@ class ContainerUi{
 
     draw(){
         this.pg.clear();
-        this.draw_(this.pg,this.px,this.py,this.w,this.h);
+        this.draw_(this.pg,this.px,this.py,this.pw,this.ph);
     }
 
     draw_(pg,x,y,w,h){

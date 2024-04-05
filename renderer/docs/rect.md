@@ -70,7 +70,7 @@ Note: In almost all functions you can pass null parameter if you want to only fa
     - f is color(num,num,num,num), e.g. r1.set_text_color(color(100))
 10)set_show_text(b)
     - b is boolean
-11)set_text_params(align,size,style,leading)
+11)set_text_params(align,size,wrap,style,leading)
     - align is of form [horizontal,vertical], e.g. [CENTER,CENTER]
     - size is a number
     - style can be NORMAL,BOLD,ITALIC or BOLDITALIC

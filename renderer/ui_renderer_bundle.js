@@ -544,7 +544,7 @@ p5.prototype.collidePointArcVector = function(p1, a, arcRadius, arcHeading, arcA
 
 let is_key_pressed = false,is_key_released = false, release_count = 0;
 let keyp = [], current_key_pressed = "", current_key_released = "";
-let key_pressed_events = [], key_released_events = [];
+let key_pressed_events = [], key_released_event = [];
 
 
 // checks for key pressed and key released events
@@ -684,10 +684,6 @@ function mousePressed(e){
   mouse_release_count++;
   mouseKey = mouse_button_types[e.which-1];
   totalTrackPadFinger = e.buttons;
-  mouse_dx = e.clientX - clientX;
-  mouse_dy = e.clientY - clientY;
-  clientX = e.clientX;
-  clientY = e.clientY;
   for(let i=0 ; i<mouse_pressed_events.length ; i++){
     mouse_pressed_events[i]();
   }
@@ -698,8 +694,8 @@ function mouseMoved(e){
   screenY = e.screenY;
   mouse_dx = e.clientX - clientX;
   mouse_dy = e.clientY - clientY;
-  clientX = mouseX;
-  clientY = mouseY;
+  clientX = e.clientX;
+  clientY = e.clientY;
   for(let i=0 ; i<mouse_moved_events.length ; i++){
     mouse_moved_events[i]();
   }
@@ -1354,13 +1350,14 @@ class ContainerUi{
     }
 
     set_pos(x,y){
-        this.state.x = x != null ? x : this.state.x;
-        this.state.y = y != null ? y : this.state.y;
+      this.state.x = x != null ? x : this.state.x;
+      this.state.y = y != null ? y : this.state.y;
         if(this.parent == null){
           this.x = this.state.x;
           this.y = this.state.y;
         }
     }
+
 
     set_rounds(b1,b2,b3,b4){
         this.rounds[0] = b1 != null && b1 >= 0? b1 : this.rounds[0];
@@ -2022,7 +2019,6 @@ const ui_event_loop = function(){
     }
 
     compute_hover(global_parent_uis);
-    // console.log(hovered)
     for(let i=0 ; i<previous_hover.length ; i++){
         if(previous_hover[i][previous_hover[i].length-1] != hovered[i][hovered[i].length-1]){
             compute_hover_out_event(previous_hover[i]);
@@ -2056,7 +2052,6 @@ const ui_event_loop = function(){
     compute_hover_event();
     compute_focus_event();
     compute_focus_pressed_event();
-
     
 }
 
@@ -2356,7 +2351,7 @@ class SliderUi{
 let utility_colors = {}
 
 const set_utility_colors = function(){
-    utility_colors.red = color(244,67,54);
+    utility_colors.red = color(244,667,54);
     utility_colors.pink = color(233,30,99);
     utility_colors.purple = color(156,39,176);
     utility_colors.deep_purple = color(103,53,183);

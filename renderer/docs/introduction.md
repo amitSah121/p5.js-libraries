@@ -19,6 +19,7 @@ This library provides multiple independent files that can be used independently 
     - container_ui.js
     - global_ui_event.js
     - ui.js
+- utility.js
 ```
 
 Further more, collide2D is credited to `http://benmoren.com ` to have created, which is originally called p5.collide2D in p5js library page.You can check about the library [here](https://github.com/bmoren/p5.collide2D/).
@@ -33,8 +34,22 @@ Further more, collide2D is credited to `http://benmoren.com ` to have created, w
     1) [container_ui.js](./container_ui.md)
     2) [global_ui_event.js](./global_ui_event.md)
     3) [ui.js](./ui.md)
-6) [Examples](./examples.md)
+6) [utility.js](./utility.md)
+7) [Examples](./examples.md)
 
+
+### File setup
+
+1) You can directly download ui_renderer_bundle.js and upload it to p5js web editor and then put following in index.html and you are good to go.
+```html
+    <script src="ui_renderer_bundle.js"></script> 
+```
+
+2) You can use node js as well, in that case , download this repository then either go to /renderer folder or /renderer/docs/examples folder and run ` node server.js ` , and then change the file name inside 
+```html
+    <script src="....js"></script>
+```
+and run your code.
 
 ---------------------------------------
 [Next](./controls.md)

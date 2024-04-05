@@ -15,8 +15,11 @@ Names       | Description
 `keyp` | a variable that contains list of all key pressed
 `current_key_pressed` | a variable that contains current key pressed, note that this variable is meant to be used with __is_key_pressed__ , since it retains the value even after key is released
 `current_key_released` | a variable that contains current key released, note that this variable is meant to be used with __is_key_released__ , since it retains the value even after key is released
+`key_pressed_events` | you can append your own function in this, e.g., key_pressed_events.push(()=>console.log("pressed")). In this way on every key press this event will be called.
+`key_released_events` | you can append your own function in this, e.g., key_released_events.push(()=>console.log("released")). In this way on every key release this event will be called. 
 
 Note: You won't be able to declare functions : keyPressed, keyReleased
+
 
 ### Examples
 
@@ -73,8 +76,17 @@ Names    | Description
 `screenY` | actual mouse y position
 `clientX` | mouseX
 `clientY` | mouseY
+`mouse_pressed_events` | you can append your own function in this, e.g., mouse_pressed_events.push(()=>console.log("pressed")). In this way on every mouse press this event will be called.
+`mouse_double_clicked_events` | you can append your own function in this, e.g., mouse_double_clicked_events.push(()=>console.log("Hello")). In this way on every mouse double click this event will be called.
+`mouse_dragges_events` | you can append your own function in this, e.g., mouse_dragges_events.push(()=>console.log("drag")). In this way on every mouse drag this event will be called.
+`mouse_clicked_events` | you can append your own function in this, e.g., mouse_clicked_events.push(()=>console.log("click")). In this way on every mouse click this event will be called.
+`mouse_moved_events` | you can append your own function in this, e.g., mouse_moved_events.push(()=>console.log("moved")). In this way on every mouse moved this event will be called.
+`mouse_released_events` | you can append your own function in this, e.g., mouse_released_events.push(()=>console.log("released")). In this way on every mouse released this event will be called.
+
 
 Note: You won't be able to declare functions: mousePressed, mouseClicked, mouseDoubleClicked, mouseReleased
+
+Note: mouse_dx and mouse_dy , clientX and client_Y , don't work as expected so please use mouseX-pmouseX and mouseY-pmouseY instead of mouse_dx and mouse_dy.
 
 ### Examples
 

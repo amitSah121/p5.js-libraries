@@ -107,7 +107,7 @@ The container_ui functions functions as either parent or child
 
 1) pg
     - p5.graphics
-2) px,py
+2) px,py,p1,ph
     - position of window with respect to canvas
 3) disable_window_events
     - if false disables all window events
@@ -132,7 +132,8 @@ The container_ui functions functions as either parent or child
 12) set_size_const(w_constant,h_constant)
 13) set_size_per(w_per,h_per)
 14) set_size_weight(w_weight,h_weight)
-15) set_size(w,h)
+15) set_size(w,h,b) -- if b is true then it will resize p5.Graphics
+15) set_window_size(w,h)
 16) set_text(text)
 17) set_direction(dir)
 18) set_show_text(b)
@@ -140,7 +141,7 @@ The container_ui functions functions as either parent or child
 20) set_show_image(b)
 21) set_fill_color(c)
 22) set_stroke_color(c)
-23) set_text_params(align,size,style,leading)
+23) set_text_params(align,size,wrap,style,leading)
     - if leading  == -1 then by text_leading = 17.5*(this.text_size/3)
 24) add_child(child,index)
     - child = child passed
