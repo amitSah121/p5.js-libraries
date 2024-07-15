@@ -544,7 +544,7 @@ p5.prototype.collidePointArcVector = function(p1, a, arcRadius, arcHeading, arcA
 
 let is_key_pressed = false,is_key_released = false, release_count = 0;
 let keyp = [], current_key_pressed = "", current_key_released = "";
-let key_pressed_events = [], key_released_event = [];
+let key_pressed_events = [], key_released_events = [];
 
 
 // checks for key pressed and key released events
@@ -1350,14 +1350,13 @@ class ContainerUi{
     }
 
     set_pos(x,y){
-      this.state.x = x != null ? x : this.state.x;
-      this.state.y = y != null ? y : this.state.y;
+        this.state.x = x != null ? x : this.state.x;
+        this.state.y = y != null ? y : this.state.y;
         if(this.parent == null){
-          this.x = this.state.x;
-          this.y = this.state.y;
-        }
-    }
-
+            this.x = this.state.x;
+            this.y = this.state.y;
+          }
+      }
 
     set_rounds(b1,b2,b3,b4){
         this.rounds[0] = b1 != null && b1 >= 0? b1 : this.rounds[0];
@@ -1383,25 +1382,25 @@ class ContainerUi{
     }
 
     set_size(w,h,b){
-      this.state.w = w != null ? w : this.state.w;
-      this.state.h = h != null ? h : this.state.h;
-      if(this.parent == null){
-          this.w = this.state.w;
-          this.h = this.state.h;
-          if(b){
-              this.pw = this.state.w;
-              this.ph = this.state.h;
-              this.pg = createGraphics(this.pw,this.ph);
-          }
-      }
-      // this.compute_box();
-  }
+        this.state.w = w != null ? w : this.state.w;
+        this.state.h = h != null ? h : this.state.h;
+        if(this.parent == null){
+            this.w = this.state.w;
+            this.h = this.state.h;
+            if(b){
+                this.pw = this.state.w;
+                this.ph = this.state.h;
+                this.pg = createGraphics(this.pw,this.ph);
+            }
+        }
+        // this.compute_box();
+    }
 
-  set_window_size(w,h){
-      this.pw = w != null ? w : this.pw;
-      this.ph = h != null ? h : this.ph;
-      this.pg = createGraphics(this.pw,this.ph);
-  }
+    set_window_size(w,h){
+        this.pw = w != null ? w : this.pw;
+        this.ph = h != null ? h : this.ph;
+        this.pg = createGraphics(this.pw,this.ph);
+    }
 
     set_text(s){
         this.text = s != null ? s : this.text;
@@ -1829,7 +1828,9 @@ const compute_hover = function(p,j,px,py){
             temp = p[i];
             continue;
         }
+      
         if(temp.collidePoint(mouseX-(px != null ? px : temp.px),mouseY-(py != null ? py :temp.py))){
+            // console.log(temp.state.name)
             // assert(mouseX,mouseY,i,j);
             hovered[j != null ? j : i].push(temp);
             compute_hover(temp.child,j != null ? j : i,(px != null ? px : temp.px),(py != null ? py :temp.py));
@@ -1857,6 +1858,7 @@ const compute_focus = function(p,px,py){
             for(let i=0 ; i<focused.length ; i++){
                 focused_pressed.push(focused[i]);
             }
+          break;
         }
         else if(temp.collidePoint(mouseX-(px != null ? px : temp.px),mouseY-(py != null ? py :temp.py))){
             if(is_mouse_pressed){
@@ -1864,6 +1866,7 @@ const compute_focus = function(p,px,py){
                     compute_focus_out_event();
                     // focused.length = 0;
                 }
+                // console.log(temp.state.name,px,py)
                 focused.push(temp);
                 focused_pressed.push(temp);
                 compute_focus(temp.child,(px != null ? px : temp.px),(py != null ? py :temp.py));
@@ -2011,6 +2014,7 @@ const compute_focus_clicked_event = function(){
 
 
 const ui_event_loop = function(){
+    // focused = [];
     if(hovered.length != global_parent_uis.length){
         hovered = [];
         for(let j = 0; j<global_parent_uis.length ; j++){
@@ -2307,12 +2311,13 @@ class SliderUi{
     this.slider_per.set_size_per(this.amt,this.amt);
     this.slider_per.state.fill_color = color(120);
     // this.slider_per.state.stroke_color = color(0);
-    this.slider.set_focus_pressed_event(()=>{
+    this.slider.set_focus_clicked_event(()=>{
       let p1 = mouseX-this.window.px-this.slider.x;
       let p2 = mouseY-this.window.py-this.slider.y;
       this.amt = this.dir == "vert" ? (p1>0 ? p1 : 0)/this.slider.w : (p2>0 ? p2 : 0)/this.slider.h; 
       this.slider_per.set_size_per(this.amt,this.amt);
       this.window.compute_box();
+      return true;
     })
   }
 
@@ -2334,6 +2339,8 @@ class SliderUi{
 
 
   set_size(w,h){
+    let p1 = mouseX-this.window.px-this.slider.x;
+    let p2 = mouseY-this.window.py-this.slider.y;
     this.size_w = w != null ? w : this.size_w;
     this.size_h = h != null ? h : this.size_h;
     this.slider.set_size(this.size_w,this.size_h);
