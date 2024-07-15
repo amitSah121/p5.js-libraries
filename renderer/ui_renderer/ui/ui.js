@@ -272,6 +272,8 @@ class GridUi{
   
 
     set_size(w,h){
+      let p1 = mouseX-this.window.px-this.slider.x;
+      let p2 = mouseY-this.window.py-this.slider.y;
       this.size_w = w != null ? w : this.size_w;
       this.size_h = h != null ? h : this.size_h;
       this.slider.set_size(this.size_w,this.size_h);
