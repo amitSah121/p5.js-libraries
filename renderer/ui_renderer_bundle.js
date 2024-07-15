@@ -1832,7 +1832,7 @@ const compute_hover = function(p,j,px,py){
         if(temp.collidePoint(mouseX-(px != null ? px : temp.px),mouseY-(py != null ? py :temp.py))){
             // assert(mouseX,mouseY,i,j);
             hovered[j != null ? j : i].push(temp);
-            compute_hover(temp.child,j != null ? j : i,temp.px,temp.py);
+            compute_hover(temp.child,j != null ? j : i,(px != null ? px : temp.px),(py != null ? py :temp.py));
         }
         i++;
         temp = p[i];
