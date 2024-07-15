@@ -38,6 +38,7 @@ const compute_focus = function(p,px,py){
             for(let i=0 ; i<focused.length ; i++){
                 focused_pressed.push(focused[i]);
             }
+            break;
         }
         else if(temp.collidePoint(mouseX-(px != null ? px : temp.px),mouseY-(py != null ? py :temp.py))){
             if(is_mouse_pressed){
