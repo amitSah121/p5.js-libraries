@@ -59,6 +59,8 @@ Note: By default all container_ui except parent has both w_constant and h_consta
 6) set_text(text)
 7) set_bg_color(color)
 8) set_fg_color(color)
+9) set_fg_rounds(tl,tr,br,bl)
+10) set_bg_rounds(tl,tr,br,bl)
 
 #### Example of BoxUi
 
