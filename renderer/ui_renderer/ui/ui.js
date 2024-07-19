@@ -60,6 +60,27 @@ class BoxUi{
   
     }
 
+    
+    set_bg_rounds(tl,tr,br,bl){
+        this.bg.set_rounds(tl,tr,br,bl);
+        this.margin_left.set_rounds(tl,null,null,bl);
+        this.margin_right.set_rounds(null,tr,br,null);
+        this.bg_rounds[0] = tl != null ? tl : this.bg_rounds[0];
+        this.bg_rounds[1] = tr != null ? tr : this.bg_rounds[1];
+        this.bg_rounds[2] = br != null ? br : this.bg_rounds[2];
+        this.bg_rounds[3] = bl != null ? bl : this.bg_rounds[3];
+    }
+    
+    set_fg_rounds(tl,tr,bl,br){
+        this.body.set_rounds(tl,tr,br,bl);
+        this.fg_rounds[0] = tl != null ? tl : this.fg_rounds[0];
+        this.fg_rounds[1] = tr != null ? tr : this.fg_rounds[1];
+        this.fg_rounds[2] = br != null ? br : this.fg_rounds[2];
+        this.fg_rounds[3] = bl != null ? bl : this.fg_rounds[3];
+    }
+    
+
+
     change_parent(p,i){
       if(p != null && this.parent != null){
         this.bg.remove();
