@@ -27,10 +27,10 @@ const set_utility_colors = function(){
     utility_colors.light_gray = color(241,241,241);
     utility_colors.gray = color(158,158,158);
     utility_colors.dark_gray = color(97,97,97);
-    utility_colors.pale_ed = color(255,221,221);
+    utility_colors.pale_red = color(255,221,221);
     utility_colors.pale_yellow = color(255,255,204);
     utility_colors.pale_green = color(221,255,221);
-    utility_colors.pale_green = color(221,255,255);
+    utility_colors.pale_blue = color(221,255,255);
 }
 
 p5.prototype.registerMethod("beforeSetup",set_utility_colors);
