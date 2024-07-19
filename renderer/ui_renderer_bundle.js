@@ -1725,7 +1725,7 @@ class ContainerUi{
                     // assert(p1,temp.state.name,temp.state.h)
                     h4 += p1;
                     temp.h = p1 > temp.state.h ? p1 : temp.state.h;
-                    // assert(p1,temp.state.name,temp.state.h,temp.h)
+                    // console.log(p1,temp.state.name,temp.state.h,temp.h)
                 }
                 i++;
                 temp = this.child[i];
@@ -1747,6 +1747,7 @@ class ContainerUi{
                     continue;
                 }
                 this.child[j].y = this.child[j-1].y + this.child[j-1].h; 
+                // console.log(this.child[j].h)
             }
 
 
@@ -2126,6 +2127,24 @@ class BoxUi{
 
   }
 
+  set_bg_rounds(tl,tr,br,bl){
+    this.bg.set_rounds(tl,tr,br,bl);
+    this.margin_left.set_rounds(tl,null,null,bl);
+    this.margin_right.set_rounds(null,tr,br,null);
+    this.bg_rounds[0] = tl != null ? tl : this.bg_rounds[0];
+    this.bg_rounds[1] = tr != null ? tr : this.bg_rounds[1];
+    this.bg_rounds[2] = br != null ? br : this.bg_rounds[2];
+    this.bg_rounds[3] = bl != null ? bl : this.bg_rounds[3];
+  }
+
+  set_fg_rounds(tl,tr,bl,br){
+    this.body.set_rounds(tl,tr,br,bl);
+    this.fg_rounds[0] = tl != null ? tl : this.fg_rounds[0];
+    this.fg_rounds[1] = tr != null ? tr : this.fg_rounds[1];
+    this.fg_rounds[2] = br != null ? br : this.fg_rounds[2];
+    this.fg_rounds[3] = bl != null ? bl : this.fg_rounds[3];
+  }
+
   change_parent(p,i){
     if(p != null && this.parent != null){
       this.bg.remove();
@@ -2311,10 +2330,12 @@ class SliderUi{
     this.slider_per.set_size_per(this.amt,this.amt);
     this.slider_per.state.fill_color = color(120);
     // this.slider_per.state.stroke_color = color(0);
-    this.slider.set_focus_clicked_event(()=>{
+    this.slider.set_focus_pressed_event(()=>{
       let p1 = mouseX-this.window.px-this.slider.x;
       let p2 = mouseY-this.window.py-this.slider.y;
       this.amt = this.dir == "vert" ? (p1>0 ? p1 : 0)/this.slider.w : (p2>0 ? p2 : 0)/this.slider.h; 
+      if(this.amt >= 1.0) this.amt = 1.0;
+      if(this.amt <= 0.0) this.amt = 0.0;
       this.slider_per.set_size_per(this.amt,this.amt);
       this.window.compute_box();
       return true;
@@ -2358,7 +2379,7 @@ class SliderUi{
 let utility_colors = {}
 
 const set_utility_colors = function(){
-    utility_colors.red = color(244,667,54);
+    utility_colors.red = color(244,67,54);
     utility_colors.pink = color(233,30,99);
     utility_colors.purple = color(156,39,176);
     utility_colors.deep_purple = color(103,53,183);
@@ -2382,10 +2403,10 @@ const set_utility_colors = function(){
     utility_colors.light_gray = color(241,241,241);
     utility_colors.gray = color(158,158,158);
     utility_colors.dark_gray = color(97,97,97);
-    utility_colors.pale_ed = color(255,221,221);
+    utility_colors.pale_red = color(255,221,221);
     utility_colors.pale_yellow = color(255,255,204);
     utility_colors.pale_green = color(221,255,221);
-    utility_colors.pale_green = color(221,255,255);
+    utility_colors.pale_blue = color(221,255,255);
 }
 
 p5.prototype.registerMethod("beforeSetup",set_utility_colors);
