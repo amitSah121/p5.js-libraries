@@ -34,7 +34,7 @@
     utility_colors.pale_ed = color(255,221,221);
     utility_colors.pale_yellow = color(255,255,204);
     utility_colors.pale_green = color(221,255,221);
-    utility_colors.pale_green = color(221,255,255);
+    utility_colors.pale_blue = color(221,255,255);
     
 ```
 
