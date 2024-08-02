@@ -7,6 +7,8 @@
 
 This library provides multiple independent files that can be used independently or with each other to achieve some useful task.
 
+[Click Here to follow a video tutorial.](https://youtube.com/playlist?list=PLs6F2TyAgMSL3cDmyTUNhb7h-LrBPy5_S&si=CO2Rc2_ixT_Gl78H)
+
 ### Project Structure
 ```
 - collide2D.js
