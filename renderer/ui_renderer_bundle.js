@@ -571,7 +571,7 @@ function keyPressed(e){
   keyp.push(set_key(keyCode,key));
   current_key_pressed = set_key(keyCode,key);
   for(let i=0 ; i<key_pressed_events.length ; i++){
-    key_pressed_events[i]();
+    key_pressed_events[i](e);
   }
 }
 
@@ -582,7 +582,7 @@ function keyReleased(e){
   keyp = keyp.filter(p => p.toUpperCase() != current_key_released.toUpperCase());
   
   for(let i=0 ; i<key_released_events.length ; i++){
-    key_released_events[i]();
+    key_released_events[i](e);
   }
 }
 
@@ -685,7 +685,7 @@ function mousePressed(e){
   mouseKey = mouse_button_types[e.which-1];
   totalTrackPadFinger = e.buttons;
   for(let i=0 ; i<mouse_pressed_events.length ; i++){
-    mouse_pressed_events[i]();
+    mouse_pressed_events[i](e);
   }
 }
 
@@ -697,7 +697,7 @@ function mouseMoved(e){
   clientX = e.clientX;
   clientY = e.clientY;
   for(let i=0 ; i<mouse_moved_events.length ; i++){
-    mouse_moved_events[i]();
+    mouse_moved_events[i](e);
   }
 }
 
@@ -706,7 +706,7 @@ function mouseReleased(e){
   mouse_release_count--;
   if(mouse_release_count == 0) is_mouse_pressed = false;
   for(let i=0 ; i<mouse_released_events.length ; i++){
-    mouse_released_events[i]();
+    mouse_released_events[i](e);
   }
 }
 
@@ -715,7 +715,7 @@ function mouseClicked(e){
   mouseKey = mouse_button_types[e.which-1];
   totalTrackPadFinger = e.buttons;
   for(let i=0 ; i<mouse_clicked_events.length ; i++){
-    mouse_clicked_events[i]();
+    mouse_clicked_events[i](e);
   }
 }
 
@@ -724,7 +724,7 @@ function doubleClicked(e){
   mouseKey = mouse_button_types[e.which-1];
   totalTrackPadFinger = e.buttons;
   for(let i=0 ; i<mouse_double_clicked_events.length ; i++){
-    mouse_double_clicked_events[i]();
+    mouse_double_clicked_events[i](e);
   }
 }
 
@@ -733,7 +733,7 @@ function mouseDragged(e){
   mouseKey = mouse_button_types[e.which-1];
   totalTrackPadFinger = e.buttons;
   for(let i=0 ; i<mouse_dragges_events.length ; i++){
-    mouse_dragges_events[i]();
+    mouse_dragges_events[i](e);
   }
 }
 
@@ -749,6 +749,7 @@ implementing touch functions
 
 let is_touch_started = false, is_touch_ended = false;
 let touch_ended_count = 0;
+let touch_started_events = [], touch_ended_events = [], touch_moved_events = [];
 
 const check_touch = function(){
   is_touch_ended = false;
@@ -759,6 +760,9 @@ p5.prototype.registerMethod("post",check_touch);
 function touchStarted(e){
   is_touch_started = true;
   touch_ended_count++;
+  touch_started_events.forEach(p=>{
+    p(e);
+  })
 }
 
 function touchEnded(e){
@@ -767,10 +771,15 @@ function touchEnded(e){
   if(touch_ended_count == 0){
     is_touch_started = false;
   }
+  touch_ended_events.forEach(p=>{
+    p(e);
+  })
 }
 
-function touchMoved(e){
-  // print(e)
+function touchMoved(){
+  touch_moved_events.forEach(p=>{
+    p();
+  })
 }
 // -----------------
 

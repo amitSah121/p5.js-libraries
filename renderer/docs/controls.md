@@ -144,6 +144,9 @@ Names    | Description
 `is_touch_started` | when touching starts
 `is_touch_ended` | when all touching ends
 `touch_ended_count` | for internal use only
+`touch_started_events` | push your function to run when touch starts
+`touch_ended_events` | push your function to run when touch ends
+`touch_moved_events` | push your function to run when touch moves
 
 
 Note: You won't be able to declare functions: touchStarted, touchEnded, touchMoved

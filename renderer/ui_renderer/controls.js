@@ -214,6 +214,7 @@ implementing touch functions
 
 let is_touch_started = false, is_touch_ended = false;
 let touch_ended_count = 0;
+let touch_started_events = [], touch_ended_events = [], touch_moved_events = [];
 
 const check_touch = function(){
   is_touch_ended = false;
@@ -224,6 +225,9 @@ p5.prototype.registerMethod("post",check_touch);
 function touchStarted(e){
   is_touch_started = true;
   touch_ended_count++;
+  touch_started_events.forEach(p=>{
+    p(e);
+  })
 }
 
 function touchEnded(e){
@@ -232,8 +236,13 @@ function touchEnded(e){
   if(touch_ended_count == 0){
     is_touch_started = false;
   }
+  touch_ended_events.forEach(p=>{
+    p(e);
+  })
 }
 
-function touchMoved(e){
-  // print(e)
+function touchMoved(){
+  touch_moved_events.forEach(p=>{
+    p();
+  })
 }
